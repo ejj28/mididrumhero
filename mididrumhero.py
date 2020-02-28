@@ -1,5 +1,5 @@
 # MidiDrumHero
-# https://github.com/ejj28
+# https://github.com/ejj28/mididrumhero
 
 import pyvjoy
 import pygame.midi
