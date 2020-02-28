@@ -1,0 +1,50 @@
+configVerion: "1.0"
+
+drums:
+  red:
+    button: 1
+    pads:
+      - 0:
+        midi: 40
+        sensitivity: 10
+      - 1:
+        midi: 41
+        sensitivity: 10
+  yellow:
+    button: 2
+    pads:
+      - 0:
+        midi: 42
+        sensitivity: 10
+      - 1:
+        midi: 43
+        sensitivity: 10
+  blue:
+    button: 3
+    pads:
+      - 0:
+        midi: 44
+        sensitivity: 10
+      - 1:
+        midi: 45
+        sensitivity: 10
+  green:
+    button: 4
+    pads:
+      - 0:
+        midi: 46
+        sensitivity: 10
+      - 1:
+        midi: 47
+        sensitivity: 10
+  orange:
+    button: 5
+    pads:
+      - 0:
+        midi: 48
+        sensitivity: 10
+      - 1:
+        midi: 49
+        sensitivity: 10
+  
+    
