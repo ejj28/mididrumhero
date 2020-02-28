@@ -2,6 +2,14 @@
 # https://github.com/ejj28/mididrumhero
 
 import Tkinter
+import yaml
+
+try:
+	with open('config.yml') as f:
+		configData = yaml.load(f, Loader=yaml.FullLoader)
+		print configData
+except:
+	print "The config file either does not exist or is corrupt."
 
 top = Tkinter.Tk()
 
