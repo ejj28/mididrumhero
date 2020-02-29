@@ -4,6 +4,9 @@
 import pyvjoy
 import pygame.midi
 import time
+import yaml
+
+defaultConfig = {'configVerion': '1.0', 'drums': {'blue': {'button': 3, 'pads': [{'sensitivity': 10, 'midi': 45}]}, 'orange': {'button': 5, 'pads': [{'sensitivity': 10, 'midi': 36}]}, 'green': {'button': 4, 'pads': [{'sensitivity': 10, 'midi': 43}]}, 'red': {'button': 1, 'pads': [{'sensitivity': 10, 'midi': 38}]}, 'yellow': {'button': 2, 'pads': [{'sensitivity': 10, 'midi': 48}]}}}
 
 print "\nMidiDrumHero by ejj28"
 print "https://github.com/ejj28/mididrumhero\n"
@@ -13,8 +16,22 @@ def millis():
 	return int(round(time.time() * 1000))
 
 
+firstRun = False
 
+try:
+	with open('config.yml') as file:
+		configData = yaml.load(file, Loader=yaml.FullLoader)
+		
+		print configData
+except:
+	print "The config file either does not exist or is corrupt. This is normal if this is your first time running MidiDrumHero. A new config file will be created.\n"
+	with open('config.yml', 'w') as file:
+		yaml.dump(defaultConfig, file)
+		configData = yaml.load(file, Loader=yaml.FullLoader)
+		print configData
+		firstRun = True
 
+	
 try:
 
 	vController = pyvjoy.VJoyDevice(1)
@@ -40,24 +57,22 @@ try:
 
 	lastHitTime = [0,0,0,0,0]
 	states = [False, False, False, False, False]
-	notes = [48,38,43,45,36]
-	controllerMappings = [1,2,3,4,5]
+	notes = [[],[],[],[],[]]
+	controllerMappings = [0,0,0,0,0]
 	isMapped = [False,False,False,False,False]
 	drumNames = ["red drum pad", "yellow drum pad", "blue drum pad", "green drum pad", "kick pedal"]
 
-	for t in range(len(controllerMappings)):
-		print "Please hit the " + drumNames[t]
-		while isMapped[t] == False:
-			if i.poll():
-				midi_events = i.read(10)
-				for x in midi_events:
-					if x[0][2] > 10:
-						notes[t] = x[0][1]
-						isMapped[t] = True
-						print "Mapped " + drumNames[t] + " to Midi note " + str(x[0][1])
-						break
-	print "MidiDrumHero is now translating your E-Kit to Clone Hero"
+	# assign buttons from config
+	controllerMappings[0] = configData["drums"]["red"]["button"]
+	controllerMappings[1] = configData["drums"]["yellow"]["button"]
+	controllerMappings[2] = configData["drums"]["blue"]["button"]
+	controllerMappings[3] = configData["drums"]["green"]["button"]
+	controllerMappings[4] = configData["drums"]["orange"]["button"]
 
+	for i in range(len(configData["drums"]["red"]["pads"])):
+		notes[0].append(configData["drums"]["red"]["pads"][i]["midi"])
+
+	print "MidiDrumHero is now translating your E-Kit to Clone Hero"
 
 	while True:
 		if i.poll():
