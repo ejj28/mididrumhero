@@ -7,7 +7,6 @@ import json
 try:
 	with open("config.json", "r") as read_file:
 		values = json.load(read_file)
-		print values
 except IOError:
 	print "The config file couldn't be read; a new one will be created"
 except ValueError:
