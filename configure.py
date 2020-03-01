@@ -2,14 +2,17 @@
 # https://github.com/ejj28/mididrumhero
 
 import Tkinter
-import yaml
+import json
 
 try:
-	with open('sampleconfig.yml') as f:
-		configData = yaml.load(f, Loader=yaml.FullLoader)
-		print configData
-except:
-	print "The config file either does not exist or is corrupt."
+	with open("config.json", "r") as read_file:
+		values = json.load(read_file)
+		print values
+except IOError:
+	print "The config file couldn't be read; a new one will be created"
+except ValueError:
+	print "The config file is corrupt; it will be overwritten"
+
 
 top = Tkinter.Tk()
 
@@ -25,7 +28,9 @@ def removePad():
 	padsList.delete(padsList.curselection()[0])
 
 def save():
-	pass
+	with open("config.json", "w") as write_file:
+		json.dump(values, write_file)
+
 
 
 drumsLabel = Tkinter.Label(top, text="Assigned drum pads")
