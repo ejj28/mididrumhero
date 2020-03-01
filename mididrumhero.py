@@ -4,33 +4,27 @@
 import pyvjoy
 import pygame.midi
 import time
-import yaml
-
-defaultConfig = {'configVerion': '1.0', 'drums': {'blue': {'button': 3, 'pads': [{'sensitivity': 10, 'midi': 45}]}, 'orange': {'button': 5, 'pads': [{'sensitivity': 10, 'midi': 36}]}, 'green': {'button': 4, 'pads': [{'sensitivity': 10, 'midi': 43}]}, 'red': {'button': 1, 'pads': [{'sensitivity': 10, 'midi': 38}]}, 'yellow': {'button': 2, 'pads': [{'sensitivity': 10, 'midi': 48}]}}}
+import json
 
 print "\nMidiDrumHero by ejj28"
 print "https://github.com/ejj28/mididrumhero\n"
 
-
 def millis():
 	return int(round(time.time() * 1000))
 
+configException = False
 
-firstRun = False
+configData = []
 
 try:
-	with open('config.yml') as file:
-		configData = yaml.load(file, Loader=yaml.FullLoader)
-		
-		print configData
-except:
-	print "The config file either does not exist or is corrupt. This is normal if this is your first time running MidiDrumHero. A new config file will be created.\n"
-	with open('config.yml', 'w') as file:
-		yaml.dump(defaultConfig, file)
-		configData = yaml.load(file, Loader=yaml.FullLoader)
-		print configData
-		firstRun = True
-
+	with open("config.json", "r") as read_file:
+		configData = json.load(read_file)
+except IOError:
+	print "The config file does not exist. Please run the configuration utility to create one.\n"
+	configException = True
+except ValueError:
+	print "The config file is corrupt. Please run the configuration utility to recreate it.\n"
+	configException = False
 	
 try:
 
@@ -54,6 +48,9 @@ try:
 	userMidiSelection = int(raw_input())
 
 	i = pygame.midi.Input(midiNumbers[userMidiSelection])
+
+	print "Normal mode (n or leave blank) or monitor midi mode (m)?"
+	mode = raw_input()
 
 	lastHitTime = [0,0,0,0,0]
 	states = [False, False, False, False, False]
@@ -91,8 +88,7 @@ try:
 			if states[y] == True and millis() >= lastHitTime[y] + 50:
 				vController.set_button(controllerMappings[y], 0)
 				states[y] = False
-
 					
-except KeyboardInterrupt:
+except:
 	pygame.midi.quit()
 
