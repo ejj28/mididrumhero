@@ -7,6 +7,8 @@ import tkMessageBox
 
 top = Tkinter.Tk()
 
+top.title("MidiDrumHero Configuration")
+
 values = []
 
 def loadFile():
