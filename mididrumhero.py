@@ -20,12 +20,16 @@ try:
 	with open("config.json", "r") as read_file:
 		configData = json.load(read_file)
 except IOError:
-	print "The config file does not exist. Please run the configuration utility to create one.\n"
+	print "The config file does not exist. Please run the configuration utility to create one."
 	configException = True
 except ValueError:
-	print "The config file is corrupt. Please run the configuration utility to recreate it.\n"
-	configException = False
-	
+	print "The config file is corrupt. Please run the configuration utility to recreate it."
+	configException = True
+
+if configException == True:
+	raw_input("Press enter to exit.")
+	exit()
+
 try:
 
 	vController = pyvjoy.VJoyDevice(1)
@@ -54,15 +58,18 @@ try:
 
 	mapLength = len(configData)
 
-	for i in configData:
+	for c in configData:
 		lastHitTime.append(0)
 		states.append(False)
 
 	print "MidiDrumHero is now translating your E-Kit to Clone Hero"
 
 	while True:
+		
 		if i.poll():
+			
 			midi_events = i.read(10)
+			
 			for x in midi_events:
 				
 				for b in range(len(configData)):
@@ -70,12 +77,12 @@ try:
 						vController.set_button(configData[b]["button"], 1)
 						lastHitTime[b] = millis()
 						states[b] = True
-				
+		
 		for y in range(len(states)):
 			if states[y] == True and millis() >= lastHitTime[y] + 50:
 				vController.set_button(configData[b]["button"], 0)
 				states[y] = False
 					
-except:
+finally:
 	pygame.midi.quit()
 
