@@ -49,25 +49,14 @@ try:
 
 	i = pygame.midi.Input(midiNumbers[userMidiSelection])
 
-	print "Normal mode (n or leave blank) or monitor midi mode (m)?"
-	mode = raw_input()
+	lastHitTime = []
+	states = []
 
-	lastHitTime = [0,0,0,0,0]
-	states = [False, False, False, False, False]
-	notes = [[],[],[],[],[]]
-	controllerMappings = [0,0,0,0,0]
-	isMapped = [False,False,False,False,False]
-	drumNames = ["red drum pad", "yellow drum pad", "blue drum pad", "green drum pad", "kick pedal"]
+	mapLength = len(configData)
 
-	# assign buttons from config
-	controllerMappings[0] = configData["drums"]["red"]["button"]
-	controllerMappings[1] = configData["drums"]["yellow"]["button"]
-	controllerMappings[2] = configData["drums"]["blue"]["button"]
-	controllerMappings[3] = configData["drums"]["green"]["button"]
-	controllerMappings[4] = configData["drums"]["orange"]["button"]
-
-	for i in range(len(configData["drums"]["red"]["pads"])):
-		notes[0].append(configData["drums"]["red"]["pads"][i]["midi"])
+	for i in configData:
+		lastHitTime.append(0)
+		states.append(False)
 
 	print "MidiDrumHero is now translating your E-Kit to Clone Hero"
 
@@ -76,17 +65,15 @@ try:
 			midi_events = i.read(10)
 			for x in midi_events:
 				
-				for b in range(len(notes)):
-					if x[0][1] == notes[b] and x[0][2] > 10 and states[b] == False:
-						#print "ON, " + str(x[0][1])
-						#print x
-						vController.set_button(controllerMappings[b], 1)
+				for b in range(len(configData)):
+					if x[0][1] == configData[b]["midi"] and x[0][2] > configData[b]["velocity"] and states[b] == False:
+						vController.set_button(configData[b]["button"], 1)
 						lastHitTime[b] = millis()
 						states[b] = True
 				
 		for y in range(len(states)):
 			if states[y] == True and millis() >= lastHitTime[y] + 50:
-				vController.set_button(controllerMappings[y], 0)
+				vController.set_button(configData[b]["button"], 0)
 				states[y] = False
 					
 except:
