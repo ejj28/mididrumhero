@@ -71,9 +71,11 @@ try:
 			midi_events = i.read(10)
 			
 			for x in midi_events:
-				if x[0][0] != 248 and x[0][2] != 0:
+				if x[0][2] != 0:
 					for b in range(len(configData)):
+						
 						if x[0][1] == configData[b]["midi"] and x[0][2] > configData[b]["velocity"] and states[b] == False:
+							
 							vController.set_button(configData[b]["button"], 1)
 							lastHitTime[b] = millis()
 							states[b] = True
