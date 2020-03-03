@@ -67,8 +67,8 @@ removePadButton.grid(row=9,column=1)
 saveButton.grid(row=10,column=1)
 
 drumsLabel.grid(row=2, column=1)
-velocityLabel.grid(row=5, column=0)
-padLabel.grid(row=5, column=1)
+velocityLabel.grid(row=5, column=1)
+padLabel.grid(row=5, column=0)
 buttonNumLabel.grid(row=5, column=2)
 
 top.wait_visibility()
