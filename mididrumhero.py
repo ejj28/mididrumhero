@@ -65,22 +65,23 @@ try:
 	print "MidiDrumHero is now translating your E-Kit to Clone Hero"
 
 	while True:
-		
+
 		if i.poll():
 			
 			midi_events = i.read(10)
 			
 			for x in midi_events:
-				
-				for b in range(len(configData)):
-					if x[0][1] == configData[b]["midi"] and x[0][2] > configData[b]["velocity"] and states[b] == False:
-						vController.set_button(configData[b]["button"], 1)
-						lastHitTime[b] = millis()
-						states[b] = True
+				if x[0][0] != 248 and x[0][2] != 0:
+					for b in range(len(configData)):
+						if x[0][1] == configData[b]["midi"] and x[0][2] > configData[b]["velocity"] and states[b] == False:
+							vController.set_button(configData[b]["button"], 1)
+							lastHitTime[b] = millis()
+							states[b] = True
+							
 		
-		for y in range(len(states)):
+		for y in range(len(configData)):
 			if states[y] == True and millis() >= lastHitTime[y] + 50:
-				vController.set_button(configData[b]["button"], 0)
+				vController.set_button(configData[y]["button"], 0)
 				states[y] = False
 					
 finally:
