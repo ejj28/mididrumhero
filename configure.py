@@ -30,7 +30,7 @@ def loadFile():
 			padsList.insert(Tkinter.END, json.dumps(i))	
 
 def addPad():
-	values.append({"midi": midiNumEntry.get(), "velocity": velocityEntry.get(), "button": buttonNumEntry.get()})
+	values.append({"midi": int(midiNumEntry.get()), "velocity": int(velocityEntry.get()), "button": int(buttonNumEntry.get())})
 	padsList.insert(Tkinter.END, values[-1])
 def removePad():
 	print values
