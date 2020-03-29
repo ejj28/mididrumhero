@@ -22,3 +22,8 @@
 - MidiDrumHero will now convert your E-kit's Midi signals to gamepad button presses
 
 #### Need help? Ping me (ejj28) on the Clone Hero Discord server
+
+### Information for Developers
+If you're running mididrumhero from source, you'll need to take the `utils` folder found inside the `pyvjoy` folder included in this repo and put it in `C:\\Python27\Lib\site-packages\pyvjoy`.
+
+Feel free to fork this repo and create pull requests, contributions are always welcome!
