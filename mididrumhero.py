@@ -48,7 +48,7 @@ try:
 			midiNumbers.append(i)
 			count += 1
 
-	print "Please enter the ID of the MIDI device to use:"
+	print "Please enter the number of the MIDI device to use:"
 	userMidiSelection = int(raw_input())
 
 	i = pygame.midi.Input(midiNumbers[userMidiSelection])
@@ -85,7 +85,9 @@ try:
 			if states[y] == True and millis() >= lastHitTime[y] + 50:
 				vController.set_button(configData[y]["button"], 0)
 				states[y] = False
-					
+except:
+	raw_input("An error has occurred. Press enter to exit.")
+	exit()			
 finally:
 	pygame.midi.quit()
 

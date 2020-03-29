@@ -26,7 +26,7 @@ try:
 			midiNumbers.append(i)
 			count += 1
 
-	print "Please enter the ID of the MIDI device to use:"
+	print "Please enter the number of the MIDI device to use:"
 	userMidiSelection = int(raw_input())
 
 	i = pygame.midi.Input(midiNumbers[userMidiSelection])
@@ -39,5 +39,8 @@ try:
 			for x in midi_events:
 				if x[0][2] != 0:
 					print "Midi note " + str(x[0][1]) + " at velocity " + str(x[0][2])
+except:
+	raw_input("An error has occurred. Press enter to exit.")
+	exit()
 finally:
 	pygame.midi.quit()
