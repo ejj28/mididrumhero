@@ -39,7 +39,9 @@ try:
 			for x in midi_events:
 				if x[0][2] != 0:
 					print "Midi note " + str(x[0][1]) + " at velocity " + str(x[0][2])
-except:
+except Exception as e:
+	pygame.midi.quit()
+	print e
 	raw_input("An error has occurred. Press enter to exit.")
 	exit()
 finally:

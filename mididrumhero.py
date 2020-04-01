@@ -85,7 +85,9 @@ try:
 			if states[y] == True and millis() >= lastHitTime[y] + 50:
 				vController.set_button(configData[y]["button"], 0)
 				states[y] = False
-except:
+except Exception as e:
+	pygame.midi.quit()
+	print e
 	raw_input("An error has occurred. Press enter to exit.")
 	exit()			
 finally:
