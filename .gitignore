@@ -191,4 +191,11 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Node
+node_modules
+build
+npm-debug.log
+.env
+.DS_Store
+
 # End of https://www.gitignore.io/api/linux,macos,python,windows,visualstudiocode
