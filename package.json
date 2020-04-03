@@ -22,5 +22,10 @@
   "homepage": "https://github.com/ejj28/mididrumhero#readme",
   "devDependencies": {
     "electron": "^8.2.0"
+  },
+  "dependencies": {
+    "electron-first-run": "^3.0.0",
+    "electron-json-storage": "^4.1.8",
+    "jquery": "^3.4.1"
   }
 }
