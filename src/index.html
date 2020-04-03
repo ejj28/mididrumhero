@@ -119,14 +119,15 @@
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
             <div class="dropdown">
-              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 Midi Device
+                <span class="caret"></span>
               </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Alesis Nitro</a>
-                <a class="dropdown-item" href="#">Roland TD7</a>
-                <a class="dropdown-item" href="#">Alesis Strike</a>
-              </div>
+              <ul class="dropdown-menu" id="dropdownMidi" aria-labelledby="dropdownMenu1">
+                <li><a href="#" class="dropdown-item" data-value="alesis-nitro">Alesis Nitro</a></li>
+                <li><a href="#" class="dropdown-item" data-value="roland-td7">Roland TD7</a></li>
+                <li><a href="#" class="dropdown-item" data-value="alesis-strike">Alesis Strike</a></li>
+              </ul>
             </div>
             <a type="button" data-toggle="modal" data-target="#newDrumPadModal" class="btn btn-primary btn-icon-split btn-sm">
               <span class="icon text-white">

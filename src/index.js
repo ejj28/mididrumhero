@@ -20,12 +20,17 @@ const shell = require('electron').shell;
     };
 })(jQuery);
 
+// Initalize
 $(document).ready(() => {
     var data = ipcRenderer.sendSync('getDrumPads');
     for (drumPad in data) {
         addToDrumPadTable(data[drumPad].velocity, data[drumPad].button, data[drumPad].midi);
     }
-    $('#thing').toast('show');
+
+    // Dropdown Selected Item
+    var selected = ipcRenderer.sendSync('getMidiDevice');
+    $("#dropdownMidi li a").parents(".dropdown").find('.btn').html(selected.deviceName + ' <span class="caret"></span>');
+    $("#dropdownMidi li a").parents(".dropdown").find('.btn').val(selected.deviceVal);
 });
 
 function productDelete(ctl) {
@@ -49,6 +54,12 @@ $("#saveNewDrumPad").click(function() {
     ipcRenderer.send('saveDrumPad', data);
     $('#newDrumPadModalForm').trigger('reset');
     addToDrumPadTable(data.velocity, data.button, data.midi);
+});
+
+$("#dropdownMidi li a").click(function(){
+    $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+    $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+    ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
 });
 
 // Social Media

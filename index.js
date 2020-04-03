@@ -25,7 +25,7 @@ function createWindow () {
 
   win.loadFile('src/index.html');
 
-  win.setMenu(null);
+  //win.setMenu(null);
 }
 
 ipcMain.on('message', (event, arg) => {
@@ -63,5 +63,19 @@ ipcMain.on('getDrumPads', (event, arg) => {
     event.returnValue = data;
   });
 });
+
+ipcMain.on('saveMidiDevice', (event, arg) => {
+  storage.set('midiSettings', { 'deviceName': arg[0], 'deviceVal': arg[1] }, (error) => {
+    if (error) throw error;
+  });
+});
+
+ipcMain.on('getMidiDevice', (event, arg) => {
+  storage.get('midiSettings', (error, data) => {
+    if (error) throw error;
+
+    event.returnValue = data;
+  });
+})
 
 app.on('ready', createWindow);
