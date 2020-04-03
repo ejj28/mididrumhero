@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "postinstall": "electron-builder install-app-deps"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,8 @@
     "electron": "^8.2.0"
   },
   "dependencies": {
+    "easymidi": "^1.0.3",
+    "electron-builder": "^22.4.1",
     "electron-first-run": "^3.0.0",
     "electron-json-storage": "^4.1.8",
     "jquery": "^3.4.1"
