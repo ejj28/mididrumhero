@@ -1,5 +1,5 @@
 const {ipcRenderer} = require('electron');
-const storage = require('electron-json-storage');
+const shell = require('electron').shell;
 
 (function ($) {
     $.fn.serializeFormJSON = function () {
@@ -25,6 +25,7 @@ $(document).ready(() => {
     for (drumPad in data) {
         addToDrumPadTable(data[drumPad].velocity, data[drumPad].button, data[drumPad].midi);
     }
+    $('#thing').toast('show');
 });
 
 function productDelete(ctl) {
@@ -48,4 +49,9 @@ $("#saveNewDrumPad").click(function() {
     ipcRenderer.send('saveDrumPad', data);
     $('#newDrumPadModalForm').trigger('reset');
     addToDrumPadTable(data.velocity, data.button, data.midi);
+});
+
+// Social Media
+$("#github").click(function() {
+    shell.openExternal("https://github.com/ejj28/mididrumhero");
 });
