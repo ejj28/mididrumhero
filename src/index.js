@@ -21,6 +21,8 @@ const midi = require('midi');
     };
 })(jQuery);
 
+const input = new midi.Input();
+
 // Initalize
 $(document).ready(() => {
     var data = ipcRenderer.sendSync('getDrumPads');
@@ -32,7 +34,7 @@ $(document).ready(() => {
     var selected = ipcRenderer.sendSync('getMidiDevice');
     $("#dropdownMidi li a").parents(".dropdown").find('.btn').html(selected.deviceName + ' <span class="caret"></span>');
     $("#dropdownMidi li a").parents(".dropdown").find('.btn').val(selected.deviceVal);
-    const input = new midi.Input();
+    
     var ul = document.getElementById("dropdownMidi");
     var i;
     for (i = 0; i < input.getPortCount(); i++) {
@@ -74,6 +76,7 @@ $("#dropdownMidi li a").click(function(){
     $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
     $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
     ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
+    input.openPort($(this).data('value'));
 });
 
 // Social Media
