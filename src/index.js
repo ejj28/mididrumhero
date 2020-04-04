@@ -25,13 +25,15 @@ let device = vJoyDevice.create(1);
     };
 })(jQuery);
 
-// Initalize
+// Initialize
 $(document).ready(() => {
+    // Add drumpads to the table for the user to see
     var data = ipcRenderer.sendSync('getDrumPads');
     for (drumPad in data) {
         addToDrumPadTable(data[drumPad].velocity, data[drumPad].button, data[drumPad].midi);
     }
 
+    // Alert the user if vJoy is not installed on the current computer
     if (!vJoy.isEnabled()) {
         alert("vJoy is either not installed or enabled, please fix this and then reopen MidiDrumHero")
     }
@@ -41,21 +43,20 @@ $(document).ready(() => {
     $("#dropdownMidi li a").parents(".dropdown").find('.btn').html(selected.deviceName + ' <span class="caret"></span>');
     $("#dropdownMidi li a").parents(".dropdown").find('.btn').val(selected.deviceVal);
 
+    // Remove the message in dropdown if there are Midi Devices available
+    if (input.getPortCount() > 0) {
+        $('#dropdownMidi').children("li").remove();
+    }
+
+    // Add to the dropdown
     for (var i = 0; i < input.getPortCount(); i++) {
         $('#dropdownMidi').append(
             "<li><a href='#' class='dropdown-item' data-value=" + i.toString() + ">" + input.getPortName(i) + "</a></li>"
         );
     }
-
-    $("#dropdownMidi li a").click(function(){
-        input.closePort()
-        $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
-        $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
-        ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
-        input.openPort($(this).data('value'));
-    });
 });
 
+// Check if the save button in the new drumpad modal was clicked
 $("#saveNewDrumPad").click(function() {
     var data =  $('#newDrumPadModalForm').serializeFormJSON();
     ipcRenderer.send('saveDrumPad', data);
@@ -63,20 +64,29 @@ $("#saveNewDrumPad").click(function() {
     addToDrumPadTable(data.velocity, data.button, data.midi);
 });
 
+// Check if an item in the dropdown was clicked
+$("#dropdownMidi li a").click(function(){
+    input.closePort()
+    $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+    $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+    ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
+    input.openPort($(this).data('value'));
+});
 
-
-function productDelete(button) {
+// Remove drumpad from table and from storage
+function removeDrumPad(button) {
     ipcRenderer.send('removeDrumPad', $(button).parents("tr").index());
     $(button).parents("tr").remove();
 }
 
+// Add a drumpad to the UI table
 function addToDrumPadTable(velocity, button, midi) {
     $('#drumPadTable tbody').append(
         "<tr>" +
             "<th scope='row'>" + midi + "</th>" +
             "<td>" + velocity + "</td>" +
             "<td>" + button + "</td>" +
-            "<td><button type='button' class='btn btn-danger' onclick='productDelete(this)'>Remove</button></td>" +
+            "<td><button type='button' class='btn btn-danger' onclick='removeDrumPad(this)'>Remove</button></td>" +
         "</tr>"
     );
 }
