@@ -4,7 +4,7 @@ const midi = require('midi');
 const input = new midi.Input();
 const { vJoy, vJoyDevice } = require('vjoy');
  
-if (vJoy.isEnabled()) {
+if (!vJoy.isEnabled()) {
     alert("vJoy is either not installed or enabled, please fix this and then reopen MidiDrumHero")
 }
 
