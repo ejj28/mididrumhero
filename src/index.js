@@ -46,6 +46,14 @@ $(document).ready(() => {
             "<li><a href='#' class='dropdown-item' data-value=" + i.toString() + ">" + input.getPortName(i) + "</a></li>"
         );
     }
+
+    $("#dropdownMidi li a").click(function(){
+        input.closePort()
+        $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+        $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+        ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
+        input.openPort($(this).data('value'));
+    });
 });
 
 $("#saveNewDrumPad").click(function() {
@@ -55,13 +63,7 @@ $("#saveNewDrumPad").click(function() {
     addToDrumPadTable(data.velocity, data.button, data.midi);
 });
 
-$("#dropdownMidi li a").click(function(){
-    input.closePort()
-    $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
-    $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
-    ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
-    input.openPort($(this).data('value'));
-});
+
 
 function productDelete(button) {
     ipcRenderer.send('removeDrumPad', $(button).parents("tr").index());
