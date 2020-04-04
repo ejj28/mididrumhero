@@ -2,7 +2,7 @@ const { app, BrowserWindow } = require('electron');
 const { ipcMain } = require('electron');
 const storage = require('electron-json-storage');
 const firstRun = require('electron-first-run');
-const midi = require('midi');
+const path = require('path');
 
 function createWindow () {
   let win = new BrowserWindow({
@@ -10,6 +10,7 @@ function createWindow () {
     height: 600,
     resizable: false,
     title: "MidiDrumHero",
+    icon: path.join(__dirname, 'assets/icon.png'),
     webPreferences: {
       nodeIntegration: true
     }
@@ -26,8 +27,7 @@ function createWindow () {
   }
 
   win.loadFile('src/index.html');
-
-  //win.setMenu(null);
+  win.setMenu(null);
 }
 
 
