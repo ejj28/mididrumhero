@@ -2,6 +2,11 @@ const {ipcRenderer} = require('electron');
 const shell = require('electron').shell;
 const midi = require('midi');
 const input = new midi.Input();
+const { vJoy, vJoyDevice } = require('vjoy');
+ 
+if (vJoy.isEnabled()) {
+    alert("vJoy is either not installed or enabled, please fix this and then reopen MidiDrumHero")
+}
 
 (function ($) {
     $.fn.serializeFormJSON = function () {
@@ -51,7 +56,6 @@ $(document).ready(() => {
         $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
         $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
         ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
-        console.log("Hello");
         input.openPort($(this).data('value'));
     });
 });
