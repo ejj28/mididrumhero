@@ -39,9 +39,9 @@ $(document).ready(() => {
     }
 
     // Dropdown Selected Item
-    var selected = ipcRenderer.sendSync('getMidiDevice');
-    $("#dropdownMidi li a").parents(".dropdown").find('.btn').html(selected.deviceName + ' <span class="caret"></span>');
-    $("#dropdownMidi li a").parents(".dropdown").find('.btn').val(selected.deviceVal);
+    //var selected = ipcRenderer.sendSync('getMidiDevice');
+    //$("#dropdownMidi li a").parents(".dropdown").find('.btn').html(selected.deviceName + ' <span class="caret"></span>');
+    //$("#dropdownMidi li a").parents(".dropdown").find('.btn').val(selected.deviceVal);
 
     // Remove the message in dropdown if there are Midi Devices available
     if (input.getPortCount() > 0) {

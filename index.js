@@ -8,7 +8,7 @@ function createWindow () {
   let win = new BrowserWindow({
     width: 800,
     height: 600,
-    resizable: false,
+    resizable: true,
     title: "MidiDrumHero",
     icon: path.join(__dirname, 'assets/icon.png'),
     webPreferences: {
@@ -25,7 +25,7 @@ function createWindow () {
   }
 
   win.loadFile('src/index.html');
-  win.setMenu(null);
+  //win.setMenu(null);
 }
 
 ipcMain.on('message', (event, arg) => {
