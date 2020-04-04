@@ -33,9 +33,9 @@ $(document).ready(() => {
     $("#dropdownMidi li a").parents(".dropdown").find('.btn').val(selected.deviceVal);
 });
 
-function productDelete(ctl) {
-    ipcRenderer.send('removeDrumPad', $(ctl).parents("tr").index());
-    $(ctl).parents("tr").remove();
+function productDelete(button) {
+    ipcRenderer.send('removeDrumPad', $(button).parents("tr").index());
+    $(button).parents("tr").remove();
 }
 
 function addToDrumPadTable(velocity, button, midi) {
