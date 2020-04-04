@@ -54,6 +54,16 @@ $(document).ready(() => {
             "<li><a href='#' class='dropdown-item' data-value=" + i.toString() + ">" + input.getPortName(i) + "</a></li>"
         );
     }
+
+    // Check if an item in the dropdown was clicked
+    $("#dropdownMidi li a").click(function(){
+        input.closePort()
+        $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+        $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+        ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
+        input.openPort($(this).data('value'));
+    });
+
 });
 
 // Check if the save button in the new drumpad modal was clicked
@@ -64,14 +74,7 @@ $("#saveNewDrumPad").click(function() {
     addToDrumPadTable(data.velocity, data.button, data.midi);
 });
 
-// Check if an item in the dropdown was clicked
-$("#dropdownMidi li a").click(function(){
-    input.closePort()
-    $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
-    $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
-    ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
-    input.openPort($(this).data('value'));
-});
+
 
 // Remove drumpad from table and from storage
 function removeDrumPad(button) {
