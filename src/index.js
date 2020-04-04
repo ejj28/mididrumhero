@@ -3,10 +3,6 @@ const shell = require('electron').shell;
 const midi = require('midi');
 const input = new midi.Input();
 const { vJoy, vJoyDevice } = require('vjoy');
- 
-if (!vJoy.isEnabled()) {
-    alert("vJoy is either not installed or enabled, please fix this and then reopen MidiDrumHero")
-}
 
 let device = vJoyDevice.create(1);
 
@@ -36,6 +32,10 @@ $(document).ready(() => {
         addToDrumPadTable(data[drumPad].velocity, data[drumPad].button, data[drumPad].midi);
     }
 
+    if (!vJoy.isEnabled()) {
+        alert("vJoy is either not installed or enabled, please fix this and then reopen MidiDrumHero")
+    }
+
     // Dropdown Selected Item
     var selected = ipcRenderer.sendSync('getMidiDevice');
     $("#dropdownMidi li a").parents(".dropdown").find('.btn').html(selected.deviceName + ' <span class="caret"></span>');
@@ -46,21 +46,20 @@ $(document).ready(() => {
             "<li><a href='#' class='dropdown-item' data-value=" + i.toString() + ">" + input.getPortName(i) + "</a></li>"
         );
     }
+});
 
-    $("#saveNewDrumPad").click(function() {
-        var data =  $('#newDrumPadModalForm').serializeFormJSON();
-        ipcRenderer.send('saveDrumPad', data);
-        $('#newDrumPadModalForm').trigger('reset');
-        addToDrumPadTable(data.velocity, data.button, data.midi);
-    });
-    
-    $("#dropdownMidi li a").click(function(){
-        $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
-        $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
-        ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
-        input.closePort();
-        input.openPort($(this).data('value'));
-    });
+$("#saveNewDrumPad").click(function() {
+    var data =  $('#newDrumPadModalForm').serializeFormJSON();
+    ipcRenderer.send('saveDrumPad', data);
+    $('#newDrumPadModalForm').trigger('reset');
+    addToDrumPadTable(data.velocity, data.button, data.midi);
+});
+
+$("#dropdownMidi li a").click(function(){
+    $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+    $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+    ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
+    input.openPort($(this).data('value'));
 });
 
 function productDelete(button) {
