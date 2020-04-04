@@ -8,6 +8,8 @@ function createWindow () {
   let win = new BrowserWindow({
     width: 800,
     height: 600,
+    resizable: false,
+    title: "MidiDrumHero",
     webPreferences: {
       nodeIntegration: true
     }
