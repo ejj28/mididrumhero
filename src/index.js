@@ -56,6 +56,7 @@ $("#saveNewDrumPad").click(function() {
 });
 
 $("#dropdownMidi li a").click(function(){
+    input.closePort()
     $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
     $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
     ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
