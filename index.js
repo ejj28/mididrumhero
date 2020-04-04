@@ -18,8 +18,6 @@ function createWindow () {
 
   storage.setDataPath(storage.getDefaultDataPath());
 
-  console.log(firstRun());
-
   if (firstRun() == true) {
     storage.set('config', [], (error => {
       if (error) throw error;
@@ -29,8 +27,6 @@ function createWindow () {
   win.loadFile('src/index.html');
   win.setMenu(null);
 }
-
-
 
 ipcMain.on('message', (event, arg) => {
   console.log(arg);
