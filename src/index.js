@@ -8,6 +8,8 @@ if (!vJoy.isEnabled()) {
     alert("vJoy is either not installed or enabled, please fix this and then reopen MidiDrumHero")
 }
 
+let device = vJoyDevice.create(1);
+
 (function ($) {
     $.fn.serializeFormJSON = function () {
 
@@ -56,6 +58,7 @@ $(document).ready(() => {
         $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
         $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
         ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
+        input.closePort();
         input.openPort($(this).data('value'));
     });
 });
