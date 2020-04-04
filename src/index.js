@@ -1,5 +1,6 @@
 const {ipcRenderer} = require('electron');
 const shell = require('electron').shell;
+const midi = require('midi');
 
 (function ($) {
     $.fn.serializeFormJSON = function () {
@@ -20,6 +21,8 @@ const shell = require('electron').shell;
     };
 })(jQuery);
 
+const input = new midi.Input();
+
 // Initalize
 $(document).ready(() => {
     var data = ipcRenderer.sendSync('getDrumPads');
@@ -31,6 +34,19 @@ $(document).ready(() => {
     var selected = ipcRenderer.sendSync('getMidiDevice');
     $("#dropdownMidi li a").parents(".dropdown").find('.btn').html(selected.deviceName + ' <span class="caret"></span>');
     $("#dropdownMidi li a").parents(".dropdown").find('.btn').val(selected.deviceVal);
+    
+    var ul = document.getElementById("dropdownMidi");
+    var i;
+    for (i = 0; i < input.getPortCount(); i++) {
+        var a = document.createElement("a");
+        var li = document.createElement("li");
+        a.setAttribute('href', "#");
+        a.setAttribute('class', "dropdown-item");
+        a.setAttribute('data-value', i.toString());
+        a.appendChild(document.createTextNode(input.getPortName(i)));
+        li.appendChild(a);
+        ul.appendChild(li);
+    } 
 });
 
 function productDelete(button) {
@@ -60,9 +76,20 @@ $("#dropdownMidi li a").click(function(){
     $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
     $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
     ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
+    input.openPort($(this).data('value'));
 });
 
 // Social Media
 $("#github").click(function() {
     shell.openExternal("https://github.com/ejj28/mididrumhero");
+});
+
+
+
+input.on('message', (deltaTime, message) => {
+  // The message is an array of numbers corresponding to the MIDI bytes:
+  //   [status, data1, data2]
+  // https://www.cs.cf.ac.uk/Dave/Multimedia/node158.html has some helpful
+  // information interpreting the messages.
+  console.log(`m: ${message} d: ${deltaTime}`);
 });
