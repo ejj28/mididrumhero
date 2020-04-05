@@ -1,10 +1,6 @@
 const {ipcRenderer} = require('electron');
 const shell = require('electron').shell;
-const midi = require('midi');
-const input = new midi.Input();
-const { vJoy, vJoyDevice } = require('vjoy');
 
-let device = vJoyDevice.create(1);
 
 (function ($) {
     $.fn.serializeFormJSON = function () {
@@ -27,41 +23,46 @@ let device = vJoyDevice.create(1);
 
 // Initialize
 $(document).ready(() => {
+
+    // Check vJoy status
+    var vJoyStatus = ipcRenderer.sendSync('getVjoyStatus');
+    if (vJoyStatus == false) {
+        alert("vJoy is either not installed or enabled, please fix this and then reopen MidiDrumHero")
+    } 
+
     // Add drumpads to the table for the user to see
     var data = ipcRenderer.sendSync('getDrumPads');
     for (drumPad in data) {
         addToDrumPadTable(data[drumPad].velocity, data[drumPad].button, data[drumPad].midi);
     }
 
-    // Alert the user if vJoy is not installed on the current computer
-    if (!vJoy.isEnabled()) {
-        alert("vJoy is either not installed or enabled, please fix this and then reopen MidiDrumHero")
-    }
 
     // Dropdown Selected Item
     //var selected = ipcRenderer.sendSync('getMidiDevice');
     //$("#dropdownMidi li a").parents(".dropdown").find('.btn').html(selected.deviceName + ' <span class="caret"></span>');
     //$("#dropdownMidi li a").parents(".dropdown").find('.btn').val(selected.deviceVal);
 
+
+    var midiDevices = ipcRenderer.sendSync('getMidiDevices');
     // Remove the message in dropdown if there are Midi Devices available
-    if (input.getPortCount() > 0) {
+    if (Object.keys(midiDevices).length > 0) {
         $('#dropdownMidi').children("li").remove();
     }
 
+    var midiDeviceKeys = Object.keys(midiDevices)
     // Add to the dropdown
-    for (var i = 0; i < input.getPortCount(); i++) {
+    for (var key of midiDeviceKeys) {
         $('#dropdownMidi').append(
-            "<li><a href='#' class='dropdown-item' data-value=" + i.toString() + ">" + input.getPortName(i) + "</a></li>"
+            "<li><a href='#' class='dropdown-item' data-value=" + midiDevices[key] + ">" + key + "</a></li>"
         );
     }
 
     // Check if an item in the dropdown was clicked
     $("#dropdownMidi li a").click(function(){
-        input.closePort()
         $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
         $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
-        ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
-        input.openPort($(this).data('value'));
+        //ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
+        ipcRenderer.send('openMidi', $(this).data('value'));
     });
 
 });
@@ -99,10 +100,4 @@ $("#github").click(function() {
     shell.openExternal("https://github.com/ejj28/mididrumhero");
 });
 
-input.on('message', (deltaTime, message) => {
-  // The message is an array of numbers corresponding to the MIDI bytes:
-  //   [status, data1, data2]
-  // https://www.cs.cf.ac.uk/Dave/Multimedia/node158.html has some helpful
-  // information interpreting the messages.
-  console.log(`m: ${message} d: ${deltaTime}`);
-});
+
