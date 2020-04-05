@@ -107,12 +107,20 @@ ipcMain.on('openMidi', (event, arg) => {
   input.openPort(arg)
 });
 
+function vJoySetButton(button, state) {
+  device.buttons[button].set(state)
+}
+
 input.on('message', (deltaTime, message) => {
   // The message is an array of numbers corresponding to the MIDI bytes:
   //   [status, data1, data2]
   // https://www.cs.cf.ac.uk/Dave/Multimedia/node158.html has some helpful
   // information interpreting the messages.
   console.log(`m: ${message} d: ${deltaTime}`);
+  if (message[0] >= 144 && message[0] <= 159 && message[2] != 0) {
+    vJoySetButton(1, true)
+    setTimeout(vJoySetButton, 50, 1, false)
+  }
 });
 
 app.on('ready', createWindow);
