@@ -1,6 +1,6 @@
 {
   "name": "mididrumhero",
-  "version": "1.0.0",
+  "version": "2.0.0 pre1",
   "description": "A bridge between E-Kits and Clone Hero",
   "main": "index.js",
   "directories": {
@@ -15,7 +15,7 @@
     "type": "git",
     "url": "git+https://github.com/ejj28/mididrumhero.git"
   },
-  "author": "ejj28",
+  "author": "ejj28, towner-10",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ejj28/mididrumhero/issues"
