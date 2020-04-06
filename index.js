@@ -9,8 +9,6 @@ const { vJoy, vJoyDevice } = require('vjoy');
 
 let device = vJoyDevice.create(1);
 
-
-
 function createWindow () {
   let win = new BrowserWindow({
     width: 800,
