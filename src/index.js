@@ -36,13 +36,6 @@ $(document).ready(() => {
         addToDrumPadTable(data[drumPad].velocity, data[drumPad].button, data[drumPad].midi);
     }
 
-
-    // Dropdown Selected Item
-    //var selected = ipcRenderer.sendSync('getMidiDevice');
-    //$("#dropdownMidi li a").parents(".dropdown").find('.btn').html(selected.deviceName + ' <span class="caret"></span>');
-    //$("#dropdownMidi li a").parents(".dropdown").find('.btn').val(selected.deviceVal);
-
-
     var midiDevices = ipcRenderer.sendSync('getMidiDevices');
     // Remove the message in dropdown if there are Midi Devices available
     if (Object.keys(midiDevices).length > 0) {
@@ -61,7 +54,6 @@ $(document).ready(() => {
     $("#dropdownMidi li a").click(function(){
         $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
         $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
-        //ipcRenderer.send('saveMidiDevice', [$(this).text(), $(this).data('value')]);
         ipcRenderer.send('openMidi', $(this).data('value'));
     });
 
@@ -73,6 +65,7 @@ $("#saveNewDrumPad").click(function() {
     ipcRenderer.send('saveDrumPad', data);
     $('#newDrumPadModalForm').trigger('reset');
     addToDrumPadTable(data.velocity, data.button, data.midi);
+    ipcRenderer.send('changedConfig');
 });
 
 
@@ -81,6 +74,7 @@ $("#saveNewDrumPad").click(function() {
 function removeDrumPad(button) {
     ipcRenderer.send('removeDrumPad', $(button).parents("tr").index());
     $(button).parents("tr").remove();
+    ipcRenderer.send('changedConfig');
 }
 
 // Add a drumpad to the UI table
