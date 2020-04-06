@@ -1,13 +1,11 @@
 const {ipcRenderer} = require('electron');
+const shell = require('electron').shell;
 
 $('#advSwitch').click(() => {
-    console.log("flick")
     var checkedValue = document.querySelector('#advSwitch').checked;
     if (checkedValue == true) {
-        console.log("true")
         ipcRenderer.send('debugTypeChange', true);
     } else if (checkedValue == false) {
-        console.log("false")
         ipcRenderer.send('debugTypeChange', false);
     }
 });

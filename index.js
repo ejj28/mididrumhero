@@ -36,7 +36,7 @@ function createWindow () {
   }
 
   win.loadFile('src/index.html');
-  //win.setMenu(null);
+  win.setMenu(null);
 }
 
 ipcMain.on('getVjoyStatus', (event, arg) => {
@@ -129,7 +129,7 @@ input.on('message', (deltaTime, message) => {
   //   [status, data1, data2]
   // https://www.cs.cf.ac.uk/Dave/Multimedia/node158.html has some helpful
   // information interpreting the messages.
-  console.log(`m: ${message} d: ${deltaTime}`);
+  //console.log(`m: ${message} d: ${deltaTime}`);
   if (advancedDebug == true) {
     win.webContents.send('midiLog', "Status byte: " + message[0].toString(16) + ", Midi Note: " + message[1] + ", Velocity: " + message[2]);
   }
