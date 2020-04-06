@@ -9,6 +9,7 @@ const { vJoy, vJoyDevice } = require('vjoy');
 const fs = require('fs');
 
 let device = vJoyDevice.create(1);
+var midiConfig = getMidiConfig();
 
 function createWindow () {
   let win = new BrowserWindow({
@@ -95,8 +96,6 @@ function vJoySetButton(button, state) {
   device.buttons[button].set(state)
 }
 
-
-
 function getMidiConfig() {
   var path = storage.getDataPath()
 
@@ -104,10 +103,6 @@ function getMidiConfig() {
   let parsed = JSON.parse(rawdata);
   return parsed["midiConfig"]
 }
-
-
-var midiConfig = getMidiConfig()
-
 
 function setMidiConfig(){
   midiConfig = getMidiConfig()
@@ -127,12 +122,10 @@ input.on('message', (deltaTime, message) => {
 
   if (message[0] >= 144 && message[0] <= 159 && message[2] != 0) {
     for (var entry of midiConfig) {
-      
       if ((parseInt(entry["midi"]) == message[1]) && (parseInt(entry["velocity"]) <= message[2])) {
-        
-        vJoySetButton(parseInt(entry["button"]), true)
-        setTimeout(vJoySetButton, 50, parseInt(entry["button"]), false)
-        break
+        vJoySetButton(parseInt(entry["button"]), true);
+        setTimeout(vJoySetButton, 50, parseInt(entry["button"]), false);
+        break;
       }
     }
   }
