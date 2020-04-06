@@ -6,6 +6,7 @@ const path = require('path');
 const midi = require('midi');
 const input = new midi.Input();
 const { vJoy, vJoyDevice } = require('vjoy');
+const fs = require('fs');
 
 let device = vJoyDevice.create(1);
 
@@ -22,9 +23,9 @@ function createWindow () {
   });
 
   storage.setDataPath(storage.getDefaultDataPath());
-
+  console.log(storage.getDataPath());
   if (firstRun() == true) {
-    storage.set('config', [], (error => {
+    storage.set('config', {"midiConfig":[]}, (error => {
       if (error) throw error;
     }));
   }
@@ -49,8 +50,7 @@ ipcMain.on('message', (event, arg) => {
 ipcMain.on('saveDrumPad', (event, arg) => {
   storage.get('config', (error, data) => {
     if (error) throw error;
-
-    data.push(arg);
+    data["midiConfig"].push(arg);
     
     storage.set('config', data, (err) => {
       if (err) throw err;
@@ -62,7 +62,7 @@ ipcMain.on('removeDrumPad', (event, arg) => {
   storage.get('config', (error, data) => {
     if (error) throw error;
 
-    data.splice(arg, 1);
+    data["midiConfig"].splice(arg, 1);
     
     storage.set('config', data, (err) => {
       if (err) throw err;
@@ -74,23 +74,9 @@ ipcMain.on('getDrumPads', (event, arg) => {
   storage.get('config', (error, data) => {
     if (error) throw error;
 
-    event.returnValue = data;
+    event.returnValue = data["midiConfig"];
   });
 });
-
-ipcMain.on('saveMidiDevice', (event, arg) => {
-  storage.set('midiSettings', { 'deviceName': arg[0], 'deviceVal': arg[1] }, (error) => {
-    if (error) throw error;
-  });
-});
-
-ipcMain.on('getMidiDevice', (event, arg) => {
-  storage.get('midiSettings', (error, data) => {
-    if (error) throw error;
-
-    event.returnValue = data;
-  });
-})
 
 ipcMain.on('getMidiDevices', (event, arg) => {
   var devices = {}
@@ -109,15 +95,46 @@ function vJoySetButton(button, state) {
   device.buttons[button].set(state)
 }
 
+
+
+function getMidiConfig() {
+  var path = storage.getDataPath()
+
+  let rawdata = fs.readFileSync(path + "\\config.json");
+  let parsed = JSON.parse(rawdata);
+  return parsed["midiConfig"]
+}
+
+
+var midiConfig = getMidiConfig()
+
+
+function setMidiConfig(){
+  midiConfig = getMidiConfig()
+}
+
+ipcMain.on('changedConfig', (event, arg) => {
+  setTimeout(setMidiConfig, 250)
+});
+
 input.on('message', (deltaTime, message) => {
   // The message is an array of numbers corresponding to the MIDI bytes:
   //   [status, data1, data2]
   // https://www.cs.cf.ac.uk/Dave/Multimedia/node158.html has some helpful
   // information interpreting the messages.
   console.log(`m: ${message} d: ${deltaTime}`);
+  //win.webContents.send('midiLog', message)
+
   if (message[0] >= 144 && message[0] <= 159 && message[2] != 0) {
-    vJoySetButton(1, true)
-    setTimeout(vJoySetButton, 50, 1, false)
+    for (var entry of midiConfig) {
+      
+      if ((parseInt(entry["midi"]) == message[1]) && (parseInt(entry["velocity"]) <= message[2])) {
+        
+        vJoySetButton(parseInt(entry["button"]), true)
+        setTimeout(vJoySetButton, 50, parseInt(entry["button"]), false)
+        break
+      }
+    }
   }
 });
 
