@@ -11,8 +11,10 @@ const fs = require('fs');
 let device = vJoyDevice.create(1);
 var midiConfig = getMidiConfig();
 
+var win;
+
 function createWindow () {
-  let win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     resizable: true,
@@ -45,6 +47,7 @@ ipcMain.on('getVjoyStatus', (event, arg) => {
 });
 
 ipcMain.on('message', (event, arg) => {
+  win.webContents.send('midiLog', 'testing');
   console.log(arg);
 });
 
@@ -105,11 +108,11 @@ function getMidiConfig() {
 }
 
 function setMidiConfig(){
-  midiConfig = getMidiConfig()
+  midiConfig = getMidiConfig();
 }
 
 ipcMain.on('changedConfig', (event, arg) => {
-  setTimeout(setMidiConfig, 250)
+  setTimeout(setMidiConfig, 250);
 });
 
 input.on('message', (deltaTime, message) => {
