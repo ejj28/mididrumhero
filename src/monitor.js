@@ -1,9 +1,23 @@
 const {ipcRenderer} = require('electron');
 
-$('#advancedButton').click(() => {
-    ipcRenderer.send('message');
+$('#advSwitch').click(() => {
+    console.log("flick")
+    var checkedValue = document.querySelector('#advSwitch').checked;
+    if (checkedValue == true) {
+        console.log("true")
+        ipcRenderer.send('debugTypeChange', true);
+    } else if (checkedValue == false) {
+        console.log("false")
+        ipcRenderer.send('debugTypeChange', false);
+    }
+    
 });
 
 ipcRenderer.on('midiLog', (event, args) => {
     $('#debugLogField').append("[" + new Date().toLocaleTimeString() + "] " + args + "\n");
+});
+
+// Social Media
+$("#github").click(function() {
+    shell.openExternal("https://github.com/ejj28/mididrumhero");
 });

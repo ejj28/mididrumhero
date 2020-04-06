@@ -11,6 +11,8 @@ const fs = require('fs');
 let device = vJoyDevice.create(1);
 var midiConfig = getMidiConfig();
 
+var advancedDebug = false;
+
 var win;
 
 function createWindow () {
@@ -47,8 +49,15 @@ ipcMain.on('getVjoyStatus', (event, arg) => {
 });
 
 ipcMain.on('message', (event, arg) => {
-  win.webContents.send('midiLog', 'testing');
   console.log(arg);
+});
+
+ipcMain.on('debugTypeChange', (event, arg) => {
+  if (arg == true) {
+    advancedDebug = true;
+  } else if (arg == false) {
+    advancedDebug = false;
+  }
 });
 
 ipcMain.on('saveDrumPad', (event, arg) => {
@@ -121,9 +130,14 @@ input.on('message', (deltaTime, message) => {
   // https://www.cs.cf.ac.uk/Dave/Multimedia/node158.html has some helpful
   // information interpreting the messages.
   console.log(`m: ${message} d: ${deltaTime}`);
-  //win.webContents.send('midiLog', message)
+  if (advancedDebug == true) {
+    win.webContents.send('midiLog', "Status byte: " + message[0].toString(16) + ", Midi Note: " + message[1] + ", Velocity: " + message[2]);
+  }
 
   if (message[0] >= 144 && message[0] <= 159 && message[2] != 0) {
+    if (advancedDebug == false) {
+      win.webContents.send('midiLog', "Midi Note: " + message[1] + ", Velocity: " + message[2]);
+    }
     for (var entry of midiConfig) {
       if ((parseInt(entry["midi"]) == message[1]) && (parseInt(entry["velocity"]) <= message[2])) {
         vJoySetButton(parseInt(entry["button"]), true);

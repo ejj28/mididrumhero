@@ -43,23 +43,13 @@
           <span>Dashboard</span></a>
       </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Nav Item - Pages Collapse Menu -->
+      
       <li class="nav-item active">
-        <a class="nav-link active" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link active" href="monitor.html">
           <i class="fas fa-fw fa-cog"></i>
-          <span>Configure</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Settings</h6>
-            <a class="collapse-item" href="monitor.html">Monitor</a>
-            <a class="collapse-item" href="settings.html">Settings</a>
-          </div>
-        </div>
+          <span>Monitor</span></a>
       </li>
+      <hr class="sidebar-divider">
       <li class="nav-item">
         <a type="button" class="nav-link" id="github">
           <i class="fab fa-github"></i>
@@ -118,15 +108,16 @@
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Monitor</h1>
-            <a type="button" id="advancedButton" class="btn btn-primary btn-sm">
-              <span class="text text-white">Advanced</span>
-            </a>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="advSwitch">
+              <label class="custom-control-label" for="advSwitch">Advanced output</label>
+            </div>
           </div>
 
           <!-- MONITOR GOES IN HERE -->
           
           <div class="form-group">
-            <label for="debugLogField">Debug Log</label>
+            <label for="debugLogField">Midi Monitor</label>
             <textarea class="form-control" id="debugLogField" rows="15"></textarea>
           </div>
 
