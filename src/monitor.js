@@ -10,11 +10,11 @@ $('#advSwitch').click(() => {
         console.log("false")
         ipcRenderer.send('debugTypeChange', false);
     }
-    
 });
 
 ipcRenderer.on('midiLog', (event, args) => {
     $('#debugLogField').append("[" + new Date().toLocaleTimeString() + "] " + args + "\n");
+    $('#debugLogField').scrollTop($('#debugLogField')[0].scrollHeight);
 });
 
 // Social Media
