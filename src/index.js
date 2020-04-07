@@ -62,13 +62,16 @@ $(document).ready(() => {
 // Check if the save button in the new drumpad modal was clicked
 $("#saveNewDrumPad").click(function() {
     var data =  $('#newDrumPadModalForm').serializeFormJSON();
-    ipcRenderer.send('saveDrumPad', data);
-    $('#newDrumPadModalForm').trigger('reset');
-    addToDrumPadTable(data.velocity, data.button, data.midi);
-    ipcRenderer.send('changedConfig');
+    if (data.button <= 0 || data.button > 128) {
+        alert("vJoy doesn't support buttons less than or equal to 0, and greater than 128!");
+        $('#newDrumPadModalForm').trigger('reset');
+    }
+    else {
+        ipcRenderer.send('saveDrumPad', data);
+        addToDrumPadTable(data.velocity, data.button, data.midi);
+        ipcRenderer.send('changedConfig');
+    }
 });
-
-
 
 // Remove drumpad from table and from storage
 function removeDrumPad(button) {

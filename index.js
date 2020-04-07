@@ -21,7 +21,7 @@ function createWindow () {
     height: 600,
     resizable: true,
     title: "MidiDrumHero",
-    icon: path.join(__dirname, 'assets/icon.png'),
+    icon: path.join(__dirname, 'build/icon.png'),
     webPreferences: {
       nodeIntegration: true
     }
@@ -52,7 +52,6 @@ function createWindow () {
       }));
     }
   });
-  
 
   win.loadFile('src/index.html');
   win.setMenu(null);
@@ -124,7 +123,7 @@ ipcMain.on('openMidi', (event, arg) => {
 });
 
 function vJoySetButton(button, state) {
-  device.buttons[button].set(state)
+  device.buttons[button].set(state);
 }
 
 function getMidiConfig() {

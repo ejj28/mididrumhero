@@ -15,6 +15,7 @@
     - The button number the pad will show up as in Clone Hero's settings, it doesn't matter what number you use, as long as you use 1 to 8 and use a different number for each pad unless you want multiple pads to correspond to the same pad in-game
     - The velocity at which you would like to set the hit threshold at. A good default value is 10; if your drums are sensitive and are registering erroneous hits, adjust the sesitivity as needed.
 - When done adding the pad, press the Save button
+- To add more that 8 buttons (default 1-8), configure it in the "Configure vJoy" application installed with vJoy.
 
 As soon as a Midi device has been selected, MidiDrumHero will begin reading drum hits from your E-Kit and sending them to Clone Hero. Simply map your drums in Clone Hero and play!
 
