@@ -9,7 +9,7 @@ const { vJoy, vJoyDevice } = require('vjoy');
 const fs = require('fs');
 
 let device = vJoyDevice.create(1);
-var midiConfig = getMidiConfig();
+var midiConfig;
 
 var advancedDebug = false;
 
@@ -28,12 +28,31 @@ function createWindow () {
   });
 
   storage.setDataPath(storage.getDefaultDataPath());
-  console.log(storage.getDataPath());
+
   if (firstRun() == true) {
     storage.set('config', {"midiConfig":[]}, (error => {
       if (error) throw error;
     }));
   }
+
+  storage.has('config', (error, hasKey) => {
+    if (error) throw error;
+
+    if (hasKey) {
+      console.log("Config created successfully!");
+      midiConfig = getMidiConfig();
+    }
+    else {
+      console.log("Config not created!");
+      console.log("Creating config.");
+      storage.set('config', {"midiConfig":[]}, (err => {
+        if (err) throw err;
+        midiConfig = getMidiConfig();
+        console.log("Config created successfully!");
+      }));
+    }
+  });
+  
 
   win.loadFile('src/index.html');
   win.setMenu(null);
