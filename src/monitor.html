@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+
+  <title>MidiDrumHero</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="ui-kit/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="ui-kit/css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <div class="sidebar-brand-text mx-3">MidiDrumHero</div>
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+        <a class="nav-link" href="index.html">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+      </li>
+
+      
+      <li class="nav-item active">
+        <a class="nav-link active" href="monitor.html">
+          <i class="fas fa-fw fa-cog"></i>
+          <span>Monitor</span></a>
+      </li>
+      <hr class="sidebar-divider">
+      <li class="nav-item">
+        <a type="button" class="nav-link" id="github">
+          <i class="fab fa-github"></i>
+          <span>Github</span>
+        </a>
+      </li>
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="newDrumPadModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">New Drum Pad</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="newDrumPadModalForm">
+              <div class="col">
+                <div class="row">
+                  <input type="number" name="midi" class="form-control" placeholder="Midi Number">
+                </div>
+                <br>
+                <div class="row">
+                  <input type="number" name="velocity" class="form-control" placeholder="Trigger Velocity">
+                </div>
+                <br>
+                <div class="row">
+                  <input type="number" name="button" class="form-control" placeholder="Button Number">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" id="saveNewDrumPad" class="btn btn-primary" data-dismiss="modal">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <br>
+
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Monitor</h1>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="advSwitch">
+              <label class="custom-control-label" for="advSwitch">Advanced output</label>
+            </div>
+          </div>
+
+          <!-- MONITOR GOES IN HERE -->
+          
+          <div class="form-group">
+            <label for="debugLogField">Midi Monitor</label>
+            <textarea class="form-control" id="debugLogField" rows="15"></textarea>
+          </div>
+
+      </div>
+      <!-- End of Main Content -->
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Bootstrap core JavaScript and JQuery-->
+  <script>window.$ = window.jQuery = require('jquery');</script>
+  <script src="ui-kit/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom JS for the page -->
+  <script src="monitor.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="ui-kit/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="ui-kit/js/sb-admin-2.min.js"></script>
+
+</body>
+
+</html>

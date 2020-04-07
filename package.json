@@ -1,0 +1,42 @@
+{
+  "name": "mididrumhero",
+  "version": "2.0.0",
+  "description": "A bridge between E-Kits and Clone Hero",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "postinstall": "electron-builder install-app-deps",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ejj28/mididrumhero.git"
+  },
+  "author": "ejj28, towner-10",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ejj28/mididrumhero/issues"
+  },
+  "homepage": "https://github.com/ejj28/mididrumhero#readme",
+  "devDependencies": {
+    "electron": "^8.2.0",
+    "electron-builder": "^22.4.1"
+  },
+  "build": {
+    "appId": "com.ejj28.mididrumhero",
+    "win": {
+      "target": "NSIS",
+      "icon": "build/icon.ico"
+    }
+  },
+  "dependencies": {
+    "electron-builder-squirrel-windows": "^22.5.1",
+    "electron-first-run": "^3.0.0",
+    "electron-json-storage": "^4.1.8",
+    "jquery": "^3.4.1",
+    "midi": "^1.0.0",
+    "vjoy": "^1.1.0"
+  }
+}
