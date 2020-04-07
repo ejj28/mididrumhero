@@ -18,6 +18,9 @@
 
 As soon as a Midi device has been selected, MidiDrumHero will begin reading drum hits from your E-Kit and sending them to Clone Hero. Simply map your drums in Clone Hero and play!
 
+### Credits
+Developed by [ejj28](https://github.com/ejj28) and [towner-10](https://github.com/towner-10)
+
 #### Need help? Ping me (ejj28) on the Clone Hero Discord server
 
 Feel free to fork this repo and create pull requests, contributions are always welcome!
