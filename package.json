@@ -28,7 +28,7 @@
     "appId": "com.ejj28.mididrumhero",
     "win": {
       "target": "NSIS",
-      "icon": "build/icon.ico"
+      "icon": "build/icon.png"
     }
   },
   "dependencies": {
