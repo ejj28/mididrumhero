@@ -6,7 +6,7 @@
 ### Installation
 - [Download and install vJoy for Windows 10 Only](https://github.com/jshafer817/vJoy/releases)
 - [Download and install vJoy for other Windows versions](https://github.com/shauleiz/vJoy/releases)
-- [Download MidiDrumHero](https://github.com/ejj28/mididrumhero/releases/tag/v1.0.0) and install
+- [Download MidiDrumHero](https://github.com/ejj28/mididrumhero/releases/tag/v2.0.0-pre2) and install
 
 ### Usage
 - Select your Midi device, click **Monitor** and hit your drum pads to find the Midi note values of the drum pads you would like to map
