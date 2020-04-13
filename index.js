@@ -13,6 +13,8 @@ var midiConfig;
 
 var advancedDebug = false;
 var keysMode = false;
+var isMidiSelected = false;
+var selectedMidiPort = "";
 
 var win;
 
@@ -55,7 +57,7 @@ function createWindow () {
   });
 
   win.loadFile('src/index.html');
-  win.setMenu(null);
+  //win.setMenu(null);
 }
 
 ipcMain.on('getVjoyStatus', (event, arg) => {
@@ -79,6 +81,10 @@ ipcMain.on('debugTypeChange', (event, arg) => {
   }
 });
 
+ipcMain.on('getDebugType', (event, arg) => {
+  event.returnValue = advancedDebug;
+});
+
 ipcMain.on('inputTypeChange', (event, arg) => {
   if (arg == true) {
     keysMode = true;
@@ -86,6 +92,20 @@ ipcMain.on('inputTypeChange', (event, arg) => {
     keysMode = false;
   }
 });
+
+ipcMain.on('getKeysSwitchState', (event, arg) => {
+  event.returnValue = keysMode;
+});
+
+ipcMain.on('getIsMidiSelected', (event, arg) => {
+  event.returnValue = isMidiSelected;
+});
+
+ipcMain.on('getMidiSelected', (event, arg) => {
+  event.returnValue = selectedMidiPort;
+});
+
+
 
 ipcMain.on('saveDrumPad', (event, arg) => {
   storage.get('config', (error, data) => {
@@ -128,7 +148,9 @@ ipcMain.on('getMidiDevices', (event, arg) => {
 
 ipcMain.on('openMidi', (event, arg) => {
   input.closePort()
-  input.openPort(arg)
+  input.openPort(arg[0])
+  isMidiSelected = true;
+  selectedMidiPort = arg[1]
 });
 
 function vJoySetButton(button, state) {

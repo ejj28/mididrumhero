@@ -30,6 +30,13 @@ $(document).ready(() => {
         alert("vJoy is either not installed or enabled, please fix this and then reopen MidiDrumHero")
     } 
 
+    var keysSwitchState = ipcRenderer.sendSync('getKeysSwitchState');
+    document.getElementById("keysSwitch").checked = keysSwitchState;
+
+    
+
+    //var keysSwitchState = ipcRenderer.sendSync('getKeysSwitchState');
+
     // Add drumpads to the table for the user to see
     var data = ipcRenderer.sendSync('getDrumPads');
     for (drumPad in data) {
@@ -40,6 +47,14 @@ $(document).ready(() => {
     // Remove the message in dropdown if there are Midi Devices available
     if (Object.keys(midiDevices).length > 0) {
         $('#dropdownMidi').children("li").remove();
+
+        if (ipcRenderer.sendSync('getIsMidiSelected') == true) {
+            selectedMidi = ipcRenderer.sendSync('getMidiSelected')
+            $("#midiDropdownButton").html(selectedMidi + ' <span class="caret"></span>');
+            
+            //$(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+        }
+        
     }
 
     var midiDeviceKeys = Object.keys(midiDevices)
@@ -54,7 +69,7 @@ $(document).ready(() => {
     $("#dropdownMidi li a").click(function(){
         $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
         $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
-        ipcRenderer.send('openMidi', $(this).data('value'));
+        ipcRenderer.send('openMidi', [$(this).data('value'), $(this).text()]);
     });
 
 });
