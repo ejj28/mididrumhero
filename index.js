@@ -12,12 +12,13 @@ let device = vJoyDevice.create(1);
 var midiConfig;
 
 var advancedDebug = false;
+var keysMode = false;
 
 var win;
 
 function createWindow () {
   win = new BrowserWindow({
-    width: 800,
+    width: 900,
     height: 600,
     resizable: true,
     title: "MidiDrumHero",
@@ -75,6 +76,14 @@ ipcMain.on('debugTypeChange', (event, arg) => {
     advancedDebug = true;
   } else if (arg == false) {
     advancedDebug = false;
+  }
+});
+
+ipcMain.on('inputTypeChange', (event, arg) => {
+  if (arg == true) {
+    keysMode = true;
+  } else if (arg == false) {
+    keysMode = false;
   }
 });
 
@@ -151,16 +160,39 @@ input.on('message', (deltaTime, message) => {
   if (advancedDebug == true) {
     win.webContents.send('midiLog', "Status byte: " + message[0].toString(16) + ", Midi Note: " + message[1] + ", Velocity: " + message[2]);
   }
-
-  if (message[0] >= 144 && message[0] <= 159 && message[2] != 0) {
-    if (advancedDebug == false) {
-      win.webContents.send('midiLog', "Midi Note: " + message[1] + ", Velocity: " + message[2]);
+  
+  if (keysMode == false) {
+    if (message[0] >= 144 && message[0] <= 159 && message[2] != 0) {
+      if (advancedDebug == false) {
+        win.webContents.send('midiLog', "Midi Note: " + message[1] + ", Velocity: " + message[2]);
+      }
+      for (var entry of midiConfig) {
+        if ((parseInt(entry["midi"]) == message[1]) && (parseInt(entry["velocity"]) <= message[2])) {
+          vJoySetButton(parseInt(entry["button"]), true);
+          setTimeout(vJoySetButton, 50, parseInt(entry["button"]), false);
+          break;
+        }
+      }
     }
-    for (var entry of midiConfig) {
-      if ((parseInt(entry["midi"]) == message[1]) && (parseInt(entry["velocity"]) <= message[2])) {
-        vJoySetButton(parseInt(entry["button"]), true);
-        setTimeout(vJoySetButton, 50, parseInt(entry["button"]), false);
-        break;
+  } else if (keysMode == true) {
+    if (message[0] >= 128 && message[0] <= 159) {
+      if (advancedDebug == false) {
+        win.webContents.send('midiLog', "Midi Note: " + message[1] + ", Velocity: " + message[2]);
+      }
+      for (var entry of midiConfig) {
+          if (message[0] >= 144 && message[0] <= 159 && message[2] != 0) {
+            if ((parseInt(entry["midi"]) == message[1]) && (parseInt(entry["velocity"]) <= message[2])) {
+              vJoySetButton(parseInt(entry["button"]), true);
+              break;
+            }
+          } else if ((message[0] >= 128 && message[0] <= 143) || (message[0] >= 144 && message[0] <= 159 && message[2] == 0)) {
+            if (parseInt(entry["midi"]) == message[1]) {
+              vJoySetButton(parseInt(entry["button"]), false);
+              break;
+            }
+          }
+          
+        
       }
     }
   }

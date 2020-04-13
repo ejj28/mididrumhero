@@ -87,10 +87,19 @@ function addToDrumPadTable(velocity, button, midi) {
             "<th scope='row'>" + midi + "</th>" +
             "<td>" + velocity + "</td>" +
             "<td>" + button + "</td>" +
-            "<td><button type='button' class='btn btn-danger' onclick='removeDrumPad(this)'>Remove</button></td>" +
+            "<td><button type='button' class='btn btn-danger btn-sm' onclick='removeDrumPad(this)'>Remove</button></td>" +
         "</tr>"
     );
 }
+
+$('#keysSwitch').click(() => {
+    var checkedValue = document.querySelector('#keysSwitch').checked;
+    if (checkedValue == true) {
+        ipcRenderer.send('inputTypeChange', true);
+    } else if (checkedValue == false) {
+        ipcRenderer.send('inputTypeChange', false);
+    }
+});
 
 // Social Media
 $("#github").click(function() {
