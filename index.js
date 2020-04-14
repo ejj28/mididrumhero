@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Tray, Menu } = require('electron');
 const { ipcMain } = require('electron');
 const storage = require('electron-json-storage');
 const firstRun = require('electron-first-run');
@@ -17,6 +17,7 @@ var isMidiSelected = false;
 var selectedMidiPort = "";
 
 var win;
+var appIcon;
 
 function createWindow () {
   win = new BrowserWindow({
@@ -29,6 +30,28 @@ function createWindow () {
       nodeIntegration: true
     }
   });
+
+  var contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Dashboard', click: function () {
+        win.show();
+        win.loadFile('src/index.html');
+      }
+    },
+    {
+      label: 'Monitor', click: function () {
+        win.show();
+        win.loadFile('src/monitor.html');
+      }
+    },
+    {type: 'separator'},
+    {
+      label: 'Quit', click: function () {
+        app.isQuiting = true;
+        app.quit();
+      }
+    }
+  ]);
 
   storage.setDataPath(storage.getDefaultDataPath());
 
@@ -57,7 +80,25 @@ function createWindow () {
   });
 
   win.loadFile('src/index.html');
-  //win.setMenu(null);
+  win.setMenu(null);
+
+  win.on('close', function (event) {
+    win = null;
+  });
+
+  win.on('minimize', function (event) {
+    event.preventDefault();
+    win.hide();
+
+    appIcon = new Tray(path.join(__dirname, 'build/icon.png'));
+    appIcon.setToolTip("MidiDrumHero");
+    appIcon.setContextMenu(contextMenu);
+  });
+
+  win.on('show', function () {
+    appIcon.destroy();
+    appIcon = null;
+  });
 }
 
 ipcMain.on('getVjoyStatus', (event, arg) => {
@@ -202,19 +243,17 @@ input.on('message', (deltaTime, message) => {
         win.webContents.send('midiLog', "Midi Note: " + message[1] + ", Velocity: " + message[2]);
       }
       for (var entry of midiConfig) {
-          if (message[0] >= 144 && message[0] <= 159 && message[2] != 0) {
-            if ((parseInt(entry["midi"]) == message[1]) && (parseInt(entry["velocity"]) <= message[2])) {
-              vJoySetButton(parseInt(entry["button"]), true);
-              break;
-            }
-          } else if ((message[0] >= 128 && message[0] <= 143) || (message[0] >= 144 && message[0] <= 159 && message[2] == 0)) {
-            if (parseInt(entry["midi"]) == message[1]) {
-              vJoySetButton(parseInt(entry["button"]), false);
-              break;
-            }
+        if (message[0] >= 144 && message[0] <= 159 && message[2] != 0) {
+          if ((parseInt(entry["midi"]) == message[1]) && (parseInt(entry["velocity"]) <= message[2])) {
+            vJoySetButton(parseInt(entry["button"]), true);
+            break;
           }
-          
-        
+        } else if ((message[0] >= 128 && message[0] <= 143) || (message[0] >= 144 && message[0] <= 159 && message[2] == 0)) {
+          if (parseInt(entry["midi"]) == message[1]) {
+            vJoySetButton(parseInt(entry["button"]), false);
+            break;
+          }
+        }
       }
     }
   }
