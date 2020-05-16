@@ -1,4 +1,6 @@
 # MidiDrumHero
+[![Github Downloads](https://img.shields.io/github/downloads/ejj28/mididrumhero/total.svg)]()
+
  A bridge between E-Kits, Midi Keyboards and Clone Hero
 
 ## Usage
