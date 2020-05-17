@@ -196,4 +196,7 @@ npm-debug.log
 .env
 .DS_Store
 
+build/*
+!build/icon.png
+
 # End of https://www.gitignore.io/api/linux,macos,python,windows,visualstudiocode
