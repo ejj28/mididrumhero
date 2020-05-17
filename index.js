@@ -5,10 +5,14 @@ const firstRun = require('electron-first-run');
 const path = require('path');
 const midi = require('midi');
 const input = new midi.Input();
-const { vJoy, vJoyDevice } = require('vjoy');
+const ViGEmClient = require('vigemclient');
 const fs = require('fs');
 
-let device = vJoyDevice.create(1);
+let client = new ViGEmClient();
+client.connect();
+let controller = client.createX360Controller();
+controller.connect({vendorID: 0x1BAD, productID: 0x0003});
+
 var midiConfig;
 
 var advancedDebug = false;
@@ -103,11 +107,11 @@ function createWindow () {
 
 ipcMain.on('getVjoyStatus', (event, arg) => {
   // Alert the user if vJoy is not installed on the current computer
-  if (!vJoy.isEnabled()) {
+  /*if (!vJoy.isEnabled()) {
     event.returnValue = false
-  } else {
+  } else {*/
     event.returnValue = true
-  }
+  //}
 });
 
 ipcMain.on('message', (event, arg) => {
@@ -195,7 +199,8 @@ ipcMain.on('openMidi', (event, arg) => {
 });
 
 function vJoySetButton(button, state) {
-  device.buttons[button].set(state);
+	controller.button.Y.setValue(state);
+  //device.buttons[button].set(state);
 }
 
 function getMidiConfig() {
