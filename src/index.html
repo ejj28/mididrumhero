@@ -91,7 +91,27 @@
           </div>
         </div>
       </div>
-    </div>
+	</div>
+	
+	<div class="modal fade" id="mapDrumPadModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="staticBackdropLabel">CURRENT GAME DRUM REMOVETHIS</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+			<div class="modal-body">
+				<h5 id="mapModalCountdown" class="align-items-center justify-content-center">5</h6>
+			  Hit the drum pad you'd like to map, or wait to leave this action unchanged
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -120,11 +140,11 @@
               <input type="checkbox" class="custom-control-input" id="keysSwitch">
               <label class="custom-control-label" for="keysSwitch">Keys mode</label>
             </div>
-            <a type="button" data-toggle="modal" data-target="#newDrumPadModal" class="btn btn-primary btn-icon-split btn-sm">
+            <a type="button" data-toggle="modal" data-target="#mapDrumPadModal" class="btn btn-primary btn-icon-split btn-sm">
               <span class="icon text-white">
                 <i class="fas fa-plus"></i>
               </span>
-              <span class="text text-white">New Drum Pad</span>
+              <span class="text text-white">Map all</span>
             </a>
           </div>
 
@@ -133,10 +153,12 @@
             <table id="drumPadTable" class="table">
               <thead>
                 <tr>
+				  <th scope="col">Drum name</th>
                   <th scope="col">Midi Number</th>
-                  <th scope="col">Trigger Velocity</th>
-                  <th scope="col">Button Number</th>
-                  <th scope="col">Remove</th>
+                  <th scope="col">Velocity</th>
+                  <th scope="col">Edit</th>
+				  <th scope="col">Map</th>
+				  <th scope="col">Clear</th>
                 </tr>
               </thead>
               <tbody></tbody>
