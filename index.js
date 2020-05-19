@@ -58,7 +58,9 @@ function createWindow () {
   console.log(storage.getDataPath());
 
   if (firstRun() == true) {
-    storage.set('config', {"midiConfig":[]}, (error => {
+    let defaultConfigFile = fs.readFileSync("defaultConfig.json");
+    let defaultConfigParsed = JSON.parse(defaultConfigFile);
+    storage.set('config', defaultConfigParsed, (error => {
       if (error) throw error;
     }));
   }
@@ -67,13 +69,15 @@ function createWindow () {
     if (error) throw error;
 
     if (hasKey) {
-      console.log("Config created successfully!");
+      console.log("Config exists");
       midiConfig = getMidiConfig();
     }
     else {
       console.log("Config not created!");
       console.log("Creating config.");
-      storage.set('config', {"midiConfig":[]}, (err => {
+      let defaultConfigFile = fs.readFileSync("defaultConfig.json");
+      let defaultConfigParsed = JSON.parse(defaultConfigFile);
+      storage.set('config', defaultConfigParsed, (err => {
         if (err) throw err;
         midiConfig = getMidiConfig();
         console.log("Config created successfully!");
