@@ -32,7 +32,6 @@
     }
   },
   "dependencies": {
-    "electron-builder-squirrel-windows": "^22.5.1",
     "electron-first-run": "^3.0.0",
     "electron-json-storage": "^4.1.8",
     "jquery": "^3.5.1",
