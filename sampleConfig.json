@@ -1,0 +1,18 @@
+{
+    "drums": [
+        {
+            "laneName": "Snare",
+            "midi": "48",
+            "velocity": "30",
+            "button": "1"
+        }
+    ],
+    "keys": [
+        {
+            "laneName": "Green",
+            "midi" : "50",
+            "velocity": "30",
+            "button": "1"
+        }
+    ]
+}

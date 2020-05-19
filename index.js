@@ -55,6 +55,8 @@ function createWindow () {
 
   storage.setDataPath(storage.getDefaultDataPath());
 
+  console.log(storage.getDataPath());
+
   if (firstRun() == true) {
     storage.set('config', {"midiConfig":[]}, (error => {
       if (error) throw error;
