@@ -54,7 +54,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="monitor.html">
-          <i class="fas fa-fw fa-cog"></i>
+          <i class="fas fa-fw fa-terminal"></i>
           <span>Monitor</span></a>
       </li>
       <hr class="sidebar-divider">
@@ -67,60 +67,6 @@
     </ul>
     <!-- End of Sidebar -->
 
-    <!-- Modal -->
-    <div class="modal fade" id="newDrumPadModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">New Drum Pad</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="newDrumPadModalForm">
-              <div class="col">
-                <div class="row">
-                  <input type="number" name="midi" class="form-control" placeholder="Midi Number">
-                </div>
-                <br>
-                <div class="row">
-                  <input type="number" name="velocity" class="form-control" placeholder="Trigger Velocity">
-                </div>
-                <br>
-                <div class="row">
-                  <input type="number" name="button" class="form-control" min="1" max="128" placeholder="Button Number">
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" id="saveNewDrumPad" class="btn btn-primary" data-dismiss="modal">Save</button>
-          </div>
-        </div>
-      </div>
-	</div>
-	
-	<div class="modal fade" id="mapDrumPadModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-		  <div class="modal-content">
-			<div class="modal-header">
-			  <h5 class="modal-title" id="staticBackdropLabel">CURRENT GAME DRUM REMOVETHIS</h5>
-			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			  </button>
-			</div>
-			<div class="modal-body">
-				<h5 id="mapModalCountdown" class="align-items-center justify-content-center">5</h6>
-			  Hit the drum pad you'd like to map, or wait to leave this action unchanged
-			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-			</div>
-		  </div>
-		</div>
-	  </div>
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -149,29 +95,12 @@
               <input type="checkbox" class="custom-control-input" id="keysSwitch">
               <label class="custom-control-label" for="keysSwitch">Keys mode</label>
             </div>
-            <a type="button" data-toggle="modal" data-target="#mapDrumPadModal" class="btn btn-primary btn-icon-split btn-sm">
-              <span class="icon text-white">
-                <i class="fas fa-plus"></i>
-              </span>
-              <span class="text text-white">Map all</span>
-            </a>
+            
           </div>
 
           <!-- Content Row -->
-          <div class="row">
-            <table id="drumPadTable" class="table">
-              <thead>
-                <tr>
-				          <th scope="col">Drum name</th>
-                  <th scope="col">Midi Number</th>
-                  <th scope="col">Velocity</th>
-				          <th scope="col">Map</th>
-				          <th scope="col">Clear</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
+          
+
 
       </div>
       <!-- End of Main Content -->
