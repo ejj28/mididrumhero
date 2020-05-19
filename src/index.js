@@ -40,7 +40,7 @@ $(document).ready(() => {
     // Add drumpads to the table for the user to see
     var data = ipcRenderer.sendSync('getDrumPads');
     for (drumPad in data) {
-        addToDrumPadTable(data[drumPad].velocity, data[drumPad].button, data[drumPad].midi);
+        addToDrumPadTable(data[drumPad].laneName, data[drumPad].midi, data[drumPad].velocity);
     }
 
     var midiDevices = ipcRenderer.sendSync('getMidiDevices');
@@ -83,7 +83,7 @@ $("#saveNewDrumPad").click(function() {
     }
     else {
         ipcRenderer.send('saveDrumPad', data);
-        addToDrumPadTable(data.velocity, data.button, data.midi);
+        addToDrumPadTable(data.laneName, data.midi, data.velocity);
         ipcRenderer.send('changedConfig');
     }
 });
@@ -96,13 +96,14 @@ function removeDrumPad(button) {
 }
 
 // Add a drumpad to the UI table
-function addToDrumPadTable(velocity, button, midi) {
+function addToDrumPadTable(name, midi, velocity) {
     $('#drumPadTable tbody').append(
         "<tr>" +
-            "<th scope='row'>" + midi + "</th>" +
-            "<td>" + velocity + "</td>" +
-            "<td>" + button + "</td>" +
-            "<td><button type='button' class='btn btn-danger btn-sm' onclick='removeDrumPad(this)'>Remove</button></td>" +
+            "<th scope='row'>" + name + "</th>" +
+            "<td><a onclick='editDrumPadMidi(this)' href='#'>" + "27" + "</button></td>" +
+            "<td><a onclick='editDrumPadVelocity(this)' href='#'>" + velocity + "</button></td>" +
+            "<td><button type='button' class='btn btn-primary btn-sm' onclick='mapDrumPad(this)'>Map</button></td>" +
+            "<td><button type='button' class='btn btn-danger btn-sm' onclick='clearDrumPad(this)'>Clear</button></td>" +
         "</tr>"
     );
 }

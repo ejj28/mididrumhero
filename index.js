@@ -181,7 +181,7 @@ ipcMain.on('getDrumPads', (event, arg) => {
   storage.get('config', (error, data) => {
     if (error) throw error;
 
-    event.returnValue = data["midiConfig"];
+    event.returnValue = data["drums"];
   });
 });
 
