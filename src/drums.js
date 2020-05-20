@@ -72,7 +72,7 @@ function editDrumPadMidi(button) {
 }
 
 $("#saveMidiChanges").click(function() {
-    data = [midiEditLaneIndex, $('#editMidiNumberInput').val()];
+    var data = [midiEditLaneIndex, $('#editMidiNumberInput').val()];
     console.log(data);
     ipcRenderer.send('saveMidiData', data);
     if (data[1] == "") {
@@ -80,6 +80,32 @@ $("#saveMidiChanges").click(function() {
     } else {
         $('#drumPadTable tbody tr:eq(' + midiEditLaneIndex + ') td:eq(0) a').text(data[1]);
     }
+    
+});
+
+
+var velocityEditLaneIndex = 0;
+
+function editDrumPadVelocity(button) {
+    velocityEditLaneIndex = $(button).parents("tr").index();
+    $('#editVelocityNumberInput').val($(button).text()); 
+    $('#editVelocityModalHeader').text($(button).parents("tr").find("th").text());
+    $('#editVelocityModal').modal('show');
+}
+
+$("#saveVelocityChanges").click(function() {
+    
+    var data
+    var input = $('#editVelocityNumberInput').val()
+    if (input == "") {
+        $('#drumPadTable tbody tr:eq(' + velocityEditLaneIndex + ') td:eq(1) a').text("10");
+        data = [velocityEditLaneIndex, "10"];
+    } else {
+        $('#drumPadTable tbody tr:eq(' + velocityEditLaneIndex + ') td:eq(1) a').text(input);
+        data = [velocityEditLaneIndex, input];
+    }
+    console.log(data);
+    ipcRenderer.send('saveVelocityData', data);
     
 });
 
