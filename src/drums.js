@@ -57,18 +57,57 @@ function removeDrumPad(button) {
     ipcRenderer.send('changedConfig');
 }
 
+
+var midiEditLaneIndex = 0;
+
+var timerID = 0;
+var countdownEnded = false;
+var countdown = 5;
+var mode = "single";
+
+function runCountdown() {
+    if (countdown > 0) {
+        countdown--;
+        $(mapModalCountdown).text(countdown);
+    } else {
+        countdownEnded = true;
+        clearInterval(timerID);
+        endMapping();
+        console.log("ENDMAPCALLEDBYRUNCNTDN");
+    }
+
+}
+
 var mapLaneIndex = 0;
-function mapDrumPad(button) {
+function mapDrumPad(button, mapmode) {
+    mode = mapmode;
     mapLaneIndex = $(button).parents("tr").index();
     
     
     $('#mapDrumPadModalHeader').text("Mapping " + $(button).parents("tr").find("th").text());
     $('#mapDrumPadModal').modal('show');
+    countdown = 5;
+    countdownEnded = false;
+    ipcRenderer.send('listenForMapping');
+    timerID = setInterval(function () {
+        runCountdown();
+      }, 1000);
+}
+
+ipcRenderer.on('mappingHit', (event, args) => {
+    clearInterval(timerID);
+    endMapping();
+});
+
+
+function endMapping() {
+    if (mode == "single")  {
+        console.log("ENDMAP");
+        $('#mapDrumPadModal').modal('hide'); 
+    }
 }
 
 
-
-var midiEditLaneIndex = 0;
 
 function editDrumPadMidi(button) {
     midiEditLaneIndex = $(button).parents("tr").index();
@@ -77,7 +116,7 @@ function editDrumPadMidi(button) {
     } else {
         $('#editMidiNumberInput').val($(button).text()); 
     }
-    
+    ipcRenderer.send('saveMidiData', data);
     $('#editMidiModalHeader').text($(button).parents("tr").find("th").text());
     $('#editMidiModal').modal('show');
 }
@@ -128,7 +167,7 @@ function addToDrumPadTable(name, midi, velocity) {
                 "<th scope='row'>" + name + "</th>" +
                 "<td><a onclick='editDrumPadMidi(this)' href='#'>None</button></td>" +
                 "<td><a onclick='editDrumPadVelocity(this)' href='#'>" + velocity + "</button></td>" +
-                "<td><button type='button' class='btn btn-primary btn-sm' onclick='mapDrumPad(this)'>Map</button></td>" +
+                "<td><button type='button' class='btn btn-primary btn-sm' onclick='mapDrumPad(this, " + "\"single\"" + ")'>Map</button></td>" +
             "</tr>"
         );
     } else {
@@ -137,7 +176,7 @@ function addToDrumPadTable(name, midi, velocity) {
                 "<th scope='row'>" + name + "</th>" +
                 "<td><a onclick='editDrumPadMidi(this)' href='#'>" + midi + "</button></td>" +
                 "<td><a onclick='editDrumPadVelocity(this)' href='#'>" + velocity + "</button></td>" +
-                "<td><button type='button' class='btn btn-primary btn-sm' onclick='mapDrumPad(this)'>Map</button></td>" +
+                "<td><button type='button' class='btn btn-primary btn-sm' onclick='mapDrumPad(this, " + "\"single\"" + ")'>Map</button></td>" +
             "</tr>"
         );
     }
