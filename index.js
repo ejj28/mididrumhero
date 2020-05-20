@@ -86,7 +86,7 @@ function createWindow () {
   });
 
   win.loadFile('src/index.html');
-  win.setMenu(null);
+  //win.setMenu(null);
 
   win.on('close', function (event) {
     win = null;

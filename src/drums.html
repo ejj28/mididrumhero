@@ -14,7 +14,9 @@
 
   <!-- Custom fonts for this template-->
   <link href="ui-kit/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
 
   <!-- Custom styles for this template-->
   <link href="ui-kit/css/sb-admin-2.min.css" rel="stylesheet">
@@ -68,7 +70,8 @@
     <!-- End of Sidebar -->
 
     <!-- Modal -->
-    <div class="modal fade" id="newDrumPadModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="newDrumPadModal" data-backdrop="static" tabindex="-1" role="dialog"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -100,27 +103,48 @@
           </div>
         </div>
       </div>
-	</div>
-	
-	<div class="modal fade" id="mapDrumPadModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-		  <div class="modal-content">
-			<div class="modal-header">
-			  <h5 class="modal-title" id="staticBackdropLabel">CURRENT GAME DRUM REMOVETHIS</h5>
-			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			  </button>
-			</div>
-			<div class="modal-body">
-				<h5 id="mapModalCountdown" class="align-items-center justify-content-center">5</h6>
-			  Hit the drum pad you'd like to map, or wait to leave this action unchanged
-			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-			</div>
-		  </div>
-		</div>
-	  </div>
+    </div>
+
+    <div class="modal fade" id="mapDrumPadModal" data-backdrop="static" tabindex="-1" role="dialog"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">CURRENT GAME DRUM REMOVETHIS</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h5 id="mapModalCountdown" class="align-items-center justify-content-center">5</h6>
+              Hit the drum pad you'd like to map, or wait to leave this action unchanged
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="editMidiModal" laneIndex="" data-backdrop="static" tabindex="-1" role="dialog"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 id="editMidiModalHeader"></h6>
+            
+          </div>
+          <div class="modal-body">
+            Edit the midi number or leave blank to ignore this drum lane
+            <input id="editMidiNumberInput" type="number" name="velocity" class="form-control" placeholder="Leave empty to ignore">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" id="saveMidiChanges" class="btn btn-primary" data-dismiss="modal">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -135,21 +159,9 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-            <div class="dropdown">
-              <button class="btn btn-secondary btn-sm dropdown-toggle" id="midiDropdownButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Midi Device
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" id="dropdownMidi" aria-labelledby="dropdownMenu1">
-                <li><a class='dropdown-item disabled'>No Midi Devices Available</a></li>
-              </ul>
-            </div>
-            <div class="custom-control custom-switch">
-              <input type="checkbox" class="custom-control-input" id="keysSwitch">
-              <label class="custom-control-label" for="keysSwitch">Keys mode</label>
-            </div>
-            <a type="button" data-toggle="modal" data-target="#mapDrumPadModal" class="btn btn-primary btn-icon-split btn-sm">
+            <h1 class="h3 mb-0 text-gray-800">Drum Mappings</h1>
+            <a type="button" data-toggle="modal" data-target="#mapDrumPadModal"
+              class="btn btn-primary btn-icon-split btn-sm">
               <span class="icon text-white">
                 <i class="fas fa-plus"></i>
               </span>
@@ -162,37 +174,36 @@
             <table id="drumPadTable" class="table">
               <thead>
                 <tr>
-				          <th scope="col">Drum name</th>
+                  <th scope="col">Drum name</th>
                   <th scope="col">Midi Number</th>
                   <th scope="col">Velocity</th>
-				          <th scope="col">Map</th>
-				          <th scope="col">Clear</th>
+                  <th scope="col">Map</th>
                 </tr>
               </thead>
               <tbody></tbody>
             </table>
           </div>
 
+        </div>
+        <!-- End of Main Content -->
       </div>
-      <!-- End of Main Content -->
+      <!-- End of Content Wrapper -->
+
     </div>
-    <!-- End of Content Wrapper -->
+    <!-- End of Page Wrapper -->
 
-  </div>
-  <!-- End of Page Wrapper -->
+    <!-- Bootstrap core JavaScript and JQuery-->
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script src="ui-kit/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Bootstrap core JavaScript and JQuery-->
-  <script>window.$ = window.jQuery = require('jquery');</script>
-  <script src="ui-kit/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS for the page -->
+    <script src="drums.js"></script>
 
-  <!-- Custom JS for the page -->
-  <script src="index.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="ui-kit/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-  <!-- Core plugin JavaScript-->
-  <script src="ui-kit/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="ui-kit/js/sb-admin-2.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="ui-kit/js/sb-admin-2.min.js"></script>
 
 </body>
 

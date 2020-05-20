@@ -24,53 +24,15 @@ const shell = require('electron').shell;
 // Initialize
 $(document).ready(() => {
 
-    // Check vJoy status
-    var vJoyStatus = ipcRenderer.sendSync('getVjoyStatus');
-    if (vJoyStatus == false) {
-        alert("vJoy is either not installed or enabled, please fix this and then reopen MidiDrumHero")
-    } 
-
-    var keysSwitchState = ipcRenderer.sendSync('getKeysSwitchState');
-    document.getElementById("keysSwitch").checked = keysSwitchState;
-
-    
-
-    //var keysSwitchState = ipcRenderer.sendSync('getKeysSwitchState');
-
     // Add drumpads to the table for the user to see
+    console.log("yeet1");
     var data = ipcRenderer.sendSync('getDrumPads');
+    console.log("yeet");
     for (drumPad in data) {
         addToDrumPadTable(data[drumPad].laneName, data[drumPad].midi, data[drumPad].velocity);
     }
 
-    var midiDevices = ipcRenderer.sendSync('getMidiDevices');
-    // Remove the message in dropdown if there are Midi Devices available
-    if (Object.keys(midiDevices).length > 0) {
-        $('#dropdownMidi').children("li").remove();
-
-        if (ipcRenderer.sendSync('getIsMidiSelected') == true) {
-            selectedMidi = ipcRenderer.sendSync('getMidiSelected')
-            $("#midiDropdownButton").html(selectedMidi + ' <span class="caret"></span>');
-            
-            //$(this).parents(".dropdown").find('.btn').val($(this).data('value'));
-        }
-        
-    }
-
-    var midiDeviceKeys = Object.keys(midiDevices)
-    // Add to the dropdown
-    for (var key of midiDeviceKeys) {
-        $('#dropdownMidi').append(
-            "<li><a href='#' class='dropdown-item' data-value=" + midiDevices[key] + ">" + key + "</a></li>"
-        );
-    }
-
-    // Check if an item in the dropdown was clicked
-    $("#dropdownMidi li a").click(function(){
-        $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
-        $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
-        ipcRenderer.send('openMidi', [$(this).data('value'), $(this).text()]);
-    });
+    
 
 });
 
@@ -95,27 +57,31 @@ function removeDrumPad(button) {
     ipcRenderer.send('changedConfig');
 }
 
+function editDrumPadMidi(button) {
+    $('#editMidiNumberInput').attr("laneIndex", $(button).parents("tr").index());
+    $('#editMidiNumberInput').val($(button).text()); 
+    $('#editMidiModalHeader').text($(button).parents("tr").find("th").text());
+    $('#editMidiModal').modal('show');
+}
+
+$("#saveMidiChanges").click(function() {
+    data = [$('editMidiModal').attr("laneIndex"), $('#editMidiModal').val()];
+    console.log(data);
+    ipcRenderer.send('saveMidiData', data);
+});
+
 // Add a drumpad to the UI table
 function addToDrumPadTable(name, midi, velocity) {
     $('#drumPadTable tbody').append(
         "<tr>" +
             "<th scope='row'>" + name + "</th>" +
-            "<td><a onclick='editDrumPadMidi(this)' href='#'>" + "27" + "</button></td>" +
+            "<td><a onclick='editDrumPadMidi(this)' href='#'>" + midi + "</button></td>" +
             "<td><a onclick='editDrumPadVelocity(this)' href='#'>" + velocity + "</button></td>" +
             "<td><button type='button' class='btn btn-primary btn-sm' onclick='mapDrumPad(this)'>Map</button></td>" +
-            "<td><button type='button' class='btn btn-danger btn-sm' onclick='clearDrumPad(this)'>Clear</button></td>" +
         "</tr>"
     );
 }
 
-$('#keysSwitch').click(() => {
-    var checkedValue = document.querySelector('#keysSwitch').checked;
-    if (checkedValue == true) {
-        ipcRenderer.send('inputTypeChange', true);
-    } else if (checkedValue == false) {
-        ipcRenderer.send('inputTypeChange', false);
-    }
-});
 
 // Social Media
 $("#github").click(function() {
