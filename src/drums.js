@@ -57,17 +57,20 @@ function removeDrumPad(button) {
     ipcRenderer.send('changedConfig');
 }
 
+var midiEditLaneIndex = 0;
+
 function editDrumPadMidi(button) {
-    $('#editMidiNumberInput').attr("laneIndex", $(button).parents("tr").index());
+    midiEditLaneIndex = $(button).parents("tr").index();
     $('#editMidiNumberInput').val($(button).text()); 
     $('#editMidiModalHeader').text($(button).parents("tr").find("th").text());
     $('#editMidiModal').modal('show');
 }
 
 $("#saveMidiChanges").click(function() {
-    data = [$('editMidiModal').attr("laneIndex"), $('#editMidiModal').val()];
+    data = [midiEditLaneIndex, $('#editMidiNumberInput').val()];
     console.log(data);
     ipcRenderer.send('saveMidiData', data);
+    $('#drumPadTable tbody tr:eq(' + midiEditLaneIndex + ') td:eq(0) a').text(data[1]);
 });
 
 // Add a drumpad to the UI table
