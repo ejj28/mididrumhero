@@ -57,6 +57,17 @@ function removeDrumPad(button) {
     ipcRenderer.send('changedConfig');
 }
 
+var mapLaneIndex = 0;
+function mapDrumPad(button) {
+    mapLaneIndex = $(button).parents("tr").index();
+    
+    
+    $('#mapDrumPadModalHeader').text("Mapping " + $(button).parents("tr").find("th").text());
+    $('#mapDrumPadModal').modal('show');
+}
+
+
+
 var midiEditLaneIndex = 0;
 
 function editDrumPadMidi(button) {
