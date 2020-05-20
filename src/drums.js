@@ -61,7 +61,12 @@ var midiEditLaneIndex = 0;
 
 function editDrumPadMidi(button) {
     midiEditLaneIndex = $(button).parents("tr").index();
-    $('#editMidiNumberInput').val($(button).text()); 
+    if ($(button).text() == "None") {
+        $('#editMidiNumberInput').val(""); 
+    } else {
+        $('#editMidiNumberInput').val($(button).text()); 
+    }
+    
     $('#editMidiModalHeader').text($(button).parents("tr").find("th").text());
     $('#editMidiModal').modal('show');
 }
@@ -70,19 +75,35 @@ $("#saveMidiChanges").click(function() {
     data = [midiEditLaneIndex, $('#editMidiNumberInput').val()];
     console.log(data);
     ipcRenderer.send('saveMidiData', data);
-    $('#drumPadTable tbody tr:eq(' + midiEditLaneIndex + ') td:eq(0) a').text(data[1]);
+    if (data[1] == "") {
+        $('#drumPadTable tbody tr:eq(' + midiEditLaneIndex + ') td:eq(0) a').text("None");
+    } else {
+        $('#drumPadTable tbody tr:eq(' + midiEditLaneIndex + ') td:eq(0) a').text(data[1]);
+    }
+    
 });
 
 // Add a drumpad to the UI table
 function addToDrumPadTable(name, midi, velocity) {
-    $('#drumPadTable tbody').append(
-        "<tr>" +
-            "<th scope='row'>" + name + "</th>" +
-            "<td><a onclick='editDrumPadMidi(this)' href='#'>" + midi + "</button></td>" +
-            "<td><a onclick='editDrumPadVelocity(this)' href='#'>" + velocity + "</button></td>" +
-            "<td><button type='button' class='btn btn-primary btn-sm' onclick='mapDrumPad(this)'>Map</button></td>" +
-        "</tr>"
-    );
+    if (midi == "") {
+        $('#drumPadTable tbody').append(
+            "<tr>" +
+                "<th scope='row'>" + name + "</th>" +
+                "<td><a onclick='editDrumPadMidi(this)' href='#'>None</button></td>" +
+                "<td><a onclick='editDrumPadVelocity(this)' href='#'>" + velocity + "</button></td>" +
+                "<td><button type='button' class='btn btn-primary btn-sm' onclick='mapDrumPad(this)'>Map</button></td>" +
+            "</tr>"
+        );
+    } else {
+        $('#drumPadTable tbody').append(
+            "<tr>" +
+                "<th scope='row'>" + name + "</th>" +
+                "<td><a onclick='editDrumPadMidi(this)' href='#'>" + midi + "</button></td>" +
+                "<td><a onclick='editDrumPadVelocity(this)' href='#'>" + velocity + "</button></td>" +
+                "<td><button type='button' class='btn btn-primary btn-sm' onclick='mapDrumPad(this)'>Map</button></td>" +
+            "</tr>"
+        );
+    }
 }
 
 
