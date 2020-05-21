@@ -85,9 +85,10 @@ function mapDrumPad(button, mapmode) {
     
     
     $('#mapDrumPadModalHeader').text("Mapping " + $(button).parents("tr").find("th").text());
-    $('#mapDrumPadModal').modal('show');
     countdown = 5;
     countdownEnded = false;
+    $('#mapDrumPadModal').modal('show');
+    
     ipcRenderer.send('listenForMapping');
     timerID = setInterval(function () {
         runCountdown();
@@ -96,7 +97,11 @@ function mapDrumPad(button, mapmode) {
 
 ipcRenderer.on('mappingHit', (event, args) => {
     clearInterval(timerID);
+    $('#drumPadTable tbody tr:eq(' + mapLaneIndex + ') td:eq(0) a').text(args);
+    var data = [mapLaneIndex, args];
+    ipcRenderer.send('saveMidiData', data);
     endMapping();
+
 });
 
 
@@ -107,7 +112,9 @@ function endMapping() {
     }
 }
 
-
+function cancelMapping() {
+    ipcRenderer.send("cancelMapping");
+}
 
 function editDrumPadMidi(button) {
     midiEditLaneIndex = $(button).parents("tr").index();
@@ -116,7 +123,7 @@ function editDrumPadMidi(button) {
     } else {
         $('#editMidiNumberInput').val($(button).text()); 
     }
-    ipcRenderer.send('saveMidiData', data);
+    
     $('#editMidiModalHeader').text($(button).parents("tr").find("th").text());
     $('#editMidiModal').modal('show');
 }

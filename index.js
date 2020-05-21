@@ -220,6 +220,16 @@ ipcMain.on('changedConfig', (event, arg) => {
   setTimeout(setMidiConfig, 250);
 });
 
+var mapping = false;
+
+ipcMain.on('listenForMapping', (event, arg) => {
+  mapping = true;
+});
+
+ipcMain.on('cancelMapping', (event, arg) => {
+  mapping = false;
+});
+
 input.on('message', (deltaTime, message) => {
   // The message is an array of numbers corresponding to the MIDI bytes:
   //   [status, data1, data2]
@@ -232,14 +242,19 @@ input.on('message', (deltaTime, message) => {
   
   if (keysMode == false) {
     if (message[0] >= 144 && message[0] <= 159 && message[2] != 0) {
-      if (advancedDebug == false) {
-        win.webContents.send('midiLog', "Midi Note: " + message[1] + ", Velocity: " + message[2]);
-      }
-      for (var entry of midiConfig) {
-        if ((parseInt(entry["midi"]) == message[1]) && (parseInt(entry["velocity"]) <= message[2])) {
-          vJoySetButton(parseInt(entry["button"]), true);
-          setTimeout(vJoySetButton, 50, parseInt(entry["button"]), false);
-          break;
+      if (mapping == true) {
+        win.webContents.send("mappingHit", message[1]);
+        mapping = false;
+      } else {
+        if (advancedDebug == false) {
+          win.webContents.send('midiLog', "Midi Note: " + message[1] + ", Velocity: " + message[2]);
+        }
+        for (var entry of midiConfig) {
+          if ((parseInt(entry["midi"]) == message[1]) && (parseInt(entry["velocity"]) <= message[2])) {
+            vJoySetButton(parseInt(entry["button"]), true);
+            setTimeout(vJoySetButton, 50, parseInt(entry["button"]), false);
+            break;
+          }
         }
       }
     }
