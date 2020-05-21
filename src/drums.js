@@ -73,6 +73,7 @@ function runCountdown() {
         countdownEnded = true;
         clearInterval(timerID);
         endMapping();
+        cancelMapping();
         console.log("ENDMAPCALLEDBYRUNCNTDN");
     }
 
@@ -87,6 +88,7 @@ function mapDrumPad(button, mapmode) {
     $('#mapDrumPadModalHeader').text("Mapping " + $(button).parents("tr").find("th").text());
     countdown = 5;
     countdownEnded = false;
+    $(mapModalCountdown).text(countdown);
     $('#mapDrumPadModal').modal('show');
     
     ipcRenderer.send('listenForMapping');
