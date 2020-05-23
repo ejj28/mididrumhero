@@ -200,6 +200,18 @@ ipcMain.on('openMidi', (event, arg) => {
   selectedMidiPort = arg[1]
 });
 
+ipcMain.on('saveMidiData', (event, arg) => {
+  storage.get('config', (error, data) => {
+    if (error) throw error;
+    data["drums"][arg[0]]["midi"] = arg[1];
+    
+    storage.set('config', data, (err) => {
+      if (err) throw err;
+    });
+  });
+});
+
+
 function vJoySetButton(button, state) {
   device.buttons[button].set(state);
 }
