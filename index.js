@@ -211,6 +211,17 @@ ipcMain.on('saveMidiData', (event, arg) => {
   });
 });
 
+ipcMain.on('saveVelocityData', (event, arg) => {
+  storage.get('config', (error, data) => {
+    if (error) throw error;
+    data["drums"][arg[0]]["velocity"] = arg[1];
+    
+    storage.set('config', data, (err) => {
+      if (err) throw err;
+    });
+  });
+});
+
 
 function vJoySetButton(button, state) {
   device.buttons[button].set(state);
