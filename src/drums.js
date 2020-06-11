@@ -1,4 +1,4 @@
-const {ipcRenderer} = require('electron');
+const { ipcRenderer } = require('electron');
 const shell = require('electron').shell;
 
 
@@ -32,13 +32,13 @@ $(document).ready(() => {
         addToDrumPadTable(data[drumPad].laneName, data[drumPad].midi, data[drumPad].velocity);
     }
 
-    
+
 
 });
 
 // Check if the save button in the new drumpad modal was clicked
-$("#saveNewDrumPad").click(function() {
-    var data =  $('#newDrumPadModalForm').serializeFormJSON();
+$("#saveNewDrumPad").click(function () {
+    var data = $('#newDrumPadModalForm').serializeFormJSON();
     if (data.button <= 0 || data.button > 128) {
         alert("vJoy doesn't support buttons less than or equal to 0, and greater than 128!");
         $('#newDrumPadModalForm').trigger('reset');
@@ -65,14 +65,14 @@ var countdownEnded = false;
 var countdown = 5;
 var mode = "single";
 
-function runCountdown() {
+function runCountdown(mode) {
     if (countdown > 0) {
         countdown--;
         $(mapModalCountdown).text(countdown);
     } else {
         countdownEnded = true;
         clearInterval(timerID);
-        endMapping();
+        endMapping(mode);
         cancelMapping();
         console.log("ENDMAPCALLEDBYRUNCNTDN");
     }
@@ -80,21 +80,38 @@ function runCountdown() {
 }
 
 var mapLaneIndex = 0;
-function mapDrumPad(button, mapmode) {
-    mode = mapmode;
-    mapLaneIndex = $(button).parents("tr").index();
-    
-    
+function mapAll() {
+    mode = "multiple"
+
+    var path = storage.getDataPath()
+
+    let rawdata = fs.readFileSync(path + "\\config.json");
+
+    let parsed = JSON.parse(rawdata)["drums"];
+
+    for (var drum of parsed) {
+        mapDrumPad(drum["button"], drum["midi"]);
+    }
+}
+
+function mapDrumPad(index) {
+
+}
+
+function mapDrumPadSingle(button) {
+    mapDrumPad($(button).parents("tr").index());
+
+
     $('#mapDrumPadModalHeader').text("Mapping " + $(button).parents("tr").find("th").text());
     countdown = 5;
     countdownEnded = false;
     $(mapModalCountdown).text(countdown);
     $('#mapDrumPadModal').modal('show');
-    
+
     ipcRenderer.send('listenForMapping');
     timerID = setInterval(function () {
         runCountdown();
-      }, 1000);
+    }, 1000);
 }
 
 ipcRenderer.on('mappingHit', (event, args) => {
@@ -108,9 +125,11 @@ ipcRenderer.on('mappingHit', (event, args) => {
 
 
 function endMapping() {
-    if (mode == "single")  {
+    if (mode == "single") {
         console.log("ENDMAP");
-        $('#mapDrumPadModal').modal('hide'); 
+        $('#mapDrumPadModal').modal('hide');
+    } else {
+        triggerNextMap();
     }
 }
 
@@ -121,16 +140,16 @@ function cancelMapping() {
 function editDrumPadMidi(button) {
     midiEditLaneIndex = $(button).parents("tr").index();
     if ($(button).text() == "None") {
-        $('#editMidiNumberInput').val(""); 
+        $('#editMidiNumberInput').val("");
     } else {
-        $('#editMidiNumberInput').val($(button).text()); 
+        $('#editMidiNumberInput').val($(button).text());
     }
-    
+
     $('#editMidiModalHeader').text($(button).parents("tr").find("th").text());
     $('#editMidiModal').modal('show');
 }
 
-$("#saveMidiChanges").click(function() {
+$("#saveMidiChanges").click(function () {
     var data = [midiEditLaneIndex, $('#editMidiNumberInput').val()];
     console.log(data);
     ipcRenderer.send('saveMidiData', data);
@@ -139,7 +158,7 @@ $("#saveMidiChanges").click(function() {
     } else {
         $('#drumPadTable tbody tr:eq(' + midiEditLaneIndex + ') td:eq(0) a').text(data[1]);
     }
-    
+
 });
 
 
@@ -147,13 +166,13 @@ var velocityEditLaneIndex = 0;
 
 function editDrumPadVelocity(button) {
     velocityEditLaneIndex = $(button).parents("tr").index();
-    $('#editVelocityNumberInput').val($(button).text()); 
+    $('#editVelocityNumberInput').val($(button).text());
     $('#editVelocityModalHeader').text($(button).parents("tr").find("th").text());
     $('#editVelocityModal').modal('show');
 }
 
-$("#saveVelocityChanges").click(function() {
-    
+$("#saveVelocityChanges").click(function () {
+
     var data
     var input = $('#editVelocityNumberInput').val()
     if (input == "") {
@@ -165,27 +184,28 @@ $("#saveVelocityChanges").click(function() {
     }
     console.log(data);
     ipcRenderer.send('saveVelocityData', data);
-    
+
 });
 
 // Add a drumpad to the UI table
+
 function addToDrumPadTable(name, midi, velocity) {
     if (midi == "") {
         $('#drumPadTable tbody').append(
             "<tr>" +
-                "<th scope='row'>" + name + "</th>" +
-                "<td><a onclick='editDrumPadMidi(this)' href='#'>None</button></td>" +
-                "<td><a onclick='editDrumPadVelocity(this)' href='#'>" + velocity + "</button></td>" +
-                "<td><button type='button' class='btn btn-primary btn-sm' onclick='mapDrumPad(this, " + "\"single\"" + ")'>Map</button></td>" +
+            "<th scope='row'>" + name + "</th>" +
+            "<td><a onclick='editDrumPadMidi(this)' href='#'>None</button></td>" +
+            "<td><a onclick='editDrumPadVelocity(this)' href='#'>" + velocity + "</button></td>" +
+            "<td><button type='button' class='btn btn-primary btn-sm' onclick='mapDrumPad(this, " + "\"single\"" + ")'>Map</button></td>" +
             "</tr>"
         );
     } else {
         $('#drumPadTable tbody').append(
             "<tr>" +
-                "<th scope='row'>" + name + "</th>" +
-                "<td><a onclick='editDrumPadMidi(this)' href='#'>" + midi + "</button></td>" +
-                "<td><a onclick='editDrumPadVelocity(this)' href='#'>" + velocity + "</button></td>" +
-                "<td><button type='button' class='btn btn-primary btn-sm' onclick='mapDrumPad(this, " + "\"single\"" + ")'>Map</button></td>" +
+            "<th scope='row'>" + name + "</th>" +
+            "<td><a onclick='editDrumPadMidi(this)' href='#'>" + midi + "</button></td>" +
+            "<td><a onclick='editDrumPadVelocity(this)' href='#'>" + velocity + "</button></td>" +
+            "<td><button type='button' class='btn btn-primary btn-sm' onclick='mapDrumPad(this, " + "\"single\"" + ")'>Map</button></td>" +
             "</tr>"
         );
     }
@@ -193,7 +213,7 @@ function addToDrumPadTable(name, midi, velocity) {
 
 
 // Social Media
-$("#github").click(function() {
+$("#github").click(function () {
     shell.openExternal("https://github.com/ejj28/mididrumhero");
 });
 

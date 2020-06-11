@@ -232,7 +232,7 @@ function getMidiConfig() {
 
   let rawdata = fs.readFileSync(path + "\\config.json");
   let parsed = JSON.parse(rawdata);
-  return parsed["midiConfig"]
+  return parsed
 }
 
 function setMidiConfig(){
@@ -272,7 +272,7 @@ input.on('message', (deltaTime, message) => {
         if (advancedDebug == false) {
           win.webContents.send('midiLog', "Midi Note: " + message[1] + ", Velocity: " + message[2]);
         }
-        for (var entry of midiConfig) {
+        for (var entry of midiConfig["drums"]) {
           if ((parseInt(entry["midi"]) == message[1]) && (parseInt(entry["velocity"]) <= message[2])) {
             vJoySetButton(parseInt(entry["button"]), true);
             setTimeout(vJoySetButton, 50, parseInt(entry["button"]), false);
@@ -286,7 +286,7 @@ input.on('message', (deltaTime, message) => {
       if (advancedDebug == false) {
         win.webContents.send('midiLog', "Midi Note: " + message[1] + ", Velocity: " + message[2]);
       }
-      for (var entry of midiConfig) {
+      for (var entry of midiConfig["keys"]) {
         if (message[0] >= 144 && message[0] <= 159 && message[2] != 0) {
           if ((parseInt(entry["midi"]) == message[1]) && (parseInt(entry["velocity"]) <= message[2])) {
             vJoySetButton(parseInt(entry["button"]), true);
