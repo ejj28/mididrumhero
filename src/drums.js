@@ -193,7 +193,17 @@ function addToDrumPadTable(name, midi, velocity) {
     if (midi == "") {
         $('#drumPadTable tbody').append(
             "<tr>" +
-            "<th scope='row'>" + name + "</th>" +
+            "<th scope='row'>" +
+            "<div class=\"btn-group\">" +
+                "<button type=\"button\" class=\"btn btn-primary dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">"+ name + "</button>" +
+                "<div class=\"dropdown-menu\">" +
+                    "<a class=\"dropdown-item\" href=\"javascript:void(0)\">Red Snare</a>" +
+                    "<a class=\"dropdown-item\" href=\"javascript:void(0)\">Yellow Tom</a>" +
+                    "<a class=\"dropdown-item\" href=\"javascript:void(0)\">Blue Tom</a>" +
+                    "<a class=\"dropdown-item\" href=\"javascript:void(0)\">Green Tom</a>" +
+                "</div>" +
+            "</div>" +
+            "</th>" +
             "<td><a onclick='editDrumPadMidi(this)' href='#'>None</button></td>" +
             "<td><a onclick='editDrumPadVelocity(this)' href='#'>" + velocity + "</button></td>" +
             "<td><button type='button' class='btn btn-primary btn-sm' onclick='mapDrumPad(this, " + "\"single\"" + ")'>Map</button></td>" +
