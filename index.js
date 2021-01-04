@@ -228,7 +228,7 @@ input.on('message', (deltaTime, message) => {
   
   if (keysMode == false) {
     // Below: 176 is the status byte used by the Akai MPK Mini II's pedal
-    if (((message[0] >= 144 && message[0] <= 159) || message[0] == 176) && message[2] != 0) {
+    if ((message[0] >= 144 && message[0] <= 159 && message[2] != 0) || (message[0] == 176 && message[2] == 0)) {
       if (advancedDebug == false) {
         win.webContents.send('midiLog', "Midi Note: " + message[1] + ", Velocity: " + message[2]);
       }
@@ -241,8 +241,7 @@ input.on('message', (deltaTime, message) => {
       }
     }
   } else if (keysMode == true) {
-    // Same thing as the comment above, 176 is used by the pedal
-    if ((message[0] >= 128 && message[0] <= 159) || message[0] == 176) {
+    if (message[0] >= 128 && message[0] <= 159) {
       if (advancedDebug == false) {
         win.webContents.send('midiLog', "Midi Note: " + message[1] + ", Velocity: " + message[2]);
       }
