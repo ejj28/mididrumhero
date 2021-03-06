@@ -1,6 +1,8 @@
 # MidiDrumHero
  A bridge between E-Kits, Midi Keyboards and Clone Hero
 
+### Unless you're using it for keys, mididrumhero is pretty much obsolete now that Clone Hero's built-in MIDI support has been improved. Go give it a try!
+
 ## Usage
 #### MidiDrumHero can be used for electronic drum kits as well as Midi keyboards
 
