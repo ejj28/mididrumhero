@@ -6,6 +6,8 @@
 ## Usage
 #### MidiDrumHero can be used for electronic drum kits as well as Midi keyboards
 
+### Unless you're using it for keys, mididrumhero is pretty much obsolete now that Clone Hero's built-in MIDI support has been improved. Go give it a try!
+
 ### Installation
 - [Download and install vJoy for Windows 10 Only](https://github.com/jshafer817/vJoy/releases)
 - [Download and install vJoy for other Windows versions](https://github.com/shauleiz/vJoy/releases)
