@@ -2,11 +2,11 @@
 [![Github Downloads](https://img.shields.io/github/downloads/ejj28/mididrumhero/total.svg)](https://github.com/ejj28/mididrumhero/releases/latest)
 
  A bridge between E-Kits, Midi Keyboards and Clone Hero
+ 
+### Unless you're using it for keys, mididrumhero is pretty much obsolete now that Clone Hero's built-in MIDI support has been improved. Go give it a try!
 
 ## Usage
 #### MidiDrumHero can be used for electronic drum kits as well as Midi keyboards
-
-### Unless you're using it for keys, mididrumhero is pretty much obsolete now that Clone Hero's built-in MIDI support has been improved. Go give it a try!
 
 ### Installation
 - [Download and install vJoy for Windows 10 Only](https://github.com/jshafer817/vJoy/releases)
