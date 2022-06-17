@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/ejj28/mididrumhero#readme",
   "devDependencies": {
-    "electron": "^8.5.2",
+    "electron": "^15.5.5",
     "electron-builder": "^22.6.0"
   },
   "build": {
